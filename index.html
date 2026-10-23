@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Mostra de Projetos Solidários – Chamada simulada</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;800&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#f5f7fd;--surface:#ffffff;--surface-2:#edf1fb;--ink:#1c2442;--muted:#56617f;--line:#d5dcef;
@@ -190,6 +190,7 @@ dialog{border-top:5px solid var(--sun)}
 .msg .who{font-size:.76rem;font-weight:700;color:var(--muted)}
 .msg p{margin:2px 0 0;white-space:pre-wrap}
 .msg.prof{background:#fdf6da;border-color:#ecd98e;align-self:flex-start}
+.msg.sys{background:#fbe2df;border-color:#f0b3ad;align-self:flex-start}
 .msg.team{background:#eaf2fe;border-color:#c3d8f8;align-self:flex-end}
 .badge{display:inline-block;min-width:1.4em;text-align:center;background:var(--sun);color:#3d2c00;border-radius:99px;font-size:.74rem;font-weight:800;padding:0 6px;margin-left:5px}
 .live{display:inline-flex;align-items:center;gap:6px;font-size:.8rem;font-weight:700;color:var(--green-d)}
@@ -202,7 +203,10 @@ dialog{border-top:5px solid var(--sun)}
 @media(min-width:1500px){.wrap{max-width:1320px}}
 td.small,td .small{text-align:left;hyphens:manual}td .btn{margin:2px 0}
 .top .dev{font-size:clamp(.66rem,1.9vw,.86rem);color:var(--head-muted);margin-top:4px;font-weight:500}
-.fileline{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.fileline{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:4px}
+input.bad-in{border-color:var(--danger)!important;background:#fff5f4}
+.whoami{font-size:.86rem;color:var(--muted);margin-top:4px}.whoami b{color:var(--ink)}
+.pt-ok{color:var(--green-d);font-weight:700}.pt-warn{color:var(--warn);font-weight:700}.pt-bad{color:var(--danger);font-weight:700}
 .ilu{border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-top:12px;background:#fbfaff}
 .ilu-img{max-width:100%;max-height:440px;display:block;margin:6px auto;border-radius:6px;background:#fff}
 table.grid-t{width:auto;min-width:100%}table.grid-t td{padding:3px;border:0}
@@ -214,6 +218,12 @@ details.plan>summary{cursor:pointer;font-weight:700;color:var(--violet-d);paddin
 .kpi{border:1px solid var(--line);border-radius:10px;padding:14px 16px;min-width:0}
 .kpi .fig{font-size:clamp(1.25rem,3.4vw,1.75rem)}.kpi .l{font-size:.84rem;color:var(--muted);text-align:left}.kpi .s{font-size:.8rem;color:var(--muted);text-align:left;margin-top:2px}
 .kpi.b{background:#eaf2fe;border-color:#c3d8f8}.kpi.g{background:#fdf6da;border-color:#ecd98e}.kpi.v{background:#e6f6ec;border-color:#b9e0c6}.kpi.p{background:#f1ebfd;border-color:#d3c5f5}
+.simg{position:relative;height:22px;border-radius:11px;overflow:hidden;background:linear-gradient(90deg,#cfecd8 0 20%,#fdf0c2 20% 40%,#fbe0c4 40% 50%,#f7cfca 50% 100%);margin:6px 0 4px}
+.simg i{position:absolute;top:0;bottom:0;left:0;background:#1c244244;border-right:3px solid #1c2442}
+.simg .mk{position:absolute;top:0;bottom:0;width:2px;background:#b3261e88}
+.simscale{display:flex;justify-content:space-between;font-size:.74rem;color:var(--muted)}
+.simbadge{display:inline-flex;gap:6px;align-items:center;border-radius:99px;padding:3px 12px;font-size:.84rem;font-weight:700;border:1px solid transparent;cursor:pointer}
+.sim-0{background:#e6f6ec;color:#1d6b41;border-color:#b9e0c6}.sim-1{background:#fdf6da;color:#6b4f00;border-color:#ecd98e}.sim-2{background:#fbe8d6;color:#8a4b00;border-color:#f1c79c}.sim-3{background:#fbe2df;color:#b3261e;border-color:#f0b3ad}.sim-x{background:var(--surface-2);color:var(--muted)}
 .hb{display:grid;grid-template-columns:minmax(110px,40%) 1fr 104px;gap:10px;align-items:center;padding:5px 0;font-size:.9rem}
 .hb .n{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600}.hb .v{font-variant-numeric:tabular-nums;color:var(--muted);white-space:nowrap;font-size:.84rem;text-align:right}
 .hb .t{height:16px;border-radius:8px;background:var(--surface-2);overflow:hidden;display:flex;position:relative}
@@ -223,6 +233,60 @@ details.plan>summary{cursor:pointer;font-weight:700;color:var(--violet-d);paddin
 @media(max-width:520px){.hb{grid-template-columns:1fr auto;gap:2px 8px}.hb .n{grid-column:1}.hb .v{grid-column:2;grid-row:1}.hb .t{grid-column:1/-1}}
 @media print{nav.main,.tabs,.btn,.status,#toast{display:none!important}body{background:#fff}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* ===== visual v2: jardim de projetos ===== */
+:root{--bg:#f6f8fe;--line:#dfe5f4;--sh:0 1px 2px #23407a0f,0 12px 32px -20px #23407a55}
+body{background:radial-gradient(1100px 520px at 105% -8%,#efe8fd 0,transparent 62%),radial-gradient(900px 460px at -8% 6%,#e3eefe 0,transparent 60%),radial-gradient(900px 500px at 50% 115%,#e4f5ea 0,transparent 60%),var(--bg);background-attachment:fixed}
+h1,h2,h3,h4,.fig,.ed-line{font-family:"Bricolage Grotesque","Public Sans",system-ui,sans-serif}
+h2{font-weight:800;letter-spacing:-.02em}h3{font-weight:700;letter-spacing:-.01em}
+.ic{width:1.15em;height:1.15em;flex:none;display:inline-block;vertical-align:-.2em}
+.top{position:relative;border-bottom:0}
+.top::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:16px;pointer-events:none;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 16' preserveAspectRatio='none'%3E%3Cpath d='M0 9 C150 1 300 15 450 8 S750 1 900 8 S1100 15 1200 6 V16 H0Z' fill='%23f3effd'/%3E%3Cpath d='M0 9 C150 1 300 15 450 8 S750 1 900 8 S1100 15 1200 6' fill='none' stroke='%23e0b63a' stroke-width='3'/%3E%3C/svg%3E") bottom/100% 100% no-repeat}
+.top h1{letter-spacing:-.025em}
+nav.main{background:#f3effdf2;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+nav.main button{display:inline-flex;align-items:center;gap:8px;border-radius:12px 12px 0 0}
+nav.main button .ic{color:var(--violet-d);opacity:.75}
+nav.main button[aria-current="page"]{background:#ffffffb3}
+nav.main button[aria-current="page"] .ic{opacity:1}
+.panel{border-radius:16px;border-color:var(--line);box-shadow:var(--sh)}
+.btn{border-radius:10px}
+.tabs button{display:inline-flex;align-items:center;gap:7px;padding:8px 15px}
+.tabs button .ic{opacity:.7}.tabs button[aria-pressed="true"] .ic{opacity:1}
+input[type=text],input[type=email],input[type=url],input[type=number],input[type=password],select,textarea{border-radius:10px}
+.note{border-radius:0 12px 12px 0}
+.kpi{position:relative;border-radius:16px;padding:16px 18px 14px;box-shadow:var(--sh)}
+.kpi .ki{position:absolute;right:12px;top:12px;width:36px;height:36px;border-radius:12px;display:grid;place-items:center;background:#ffffffc0}
+.kpi .ki .ic{width:20px;height:20px}.kpi.b .ki{color:#2c5aa8}.kpi.g .ki{color:#876200}.kpi.v .ki{color:#1d6b41}.kpi.p .ki{color:#5a3fa3}
+.kpi .l{padding-right:42px}
+.card{border-radius:14px;box-shadow:var(--sh);transition:border-color .15s,transform .15s}
+.card:hover{transform:translateY(-1px)}
+.cardp{display:flex;gap:10px;align-items:center}.cardp svg{flex:none}
+/* hero do edital */
+.hero-ed{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:clamp(16px,3vw,36px);align-items:center;background:#ffffffa6;border:1px solid var(--line);border-radius:24px;padding:clamp(18px,3vw,32px);box-shadow:var(--sh);margin-bottom:26px}
+.hero-ed .hero-tx{display:grid;gap:10px}
+.hero-ed h2{font-size:clamp(1.7rem,3.6vw,2.8rem);line-height:1.05;color:#1f3a73}
+.hero-ed .hero-art svg{width:100%;height:auto;display:block}
+.hero-ed .hero-cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+@media(max-width:820px){.hero-ed{grid-template-columns:1fr}.hero-ed .hero-art{order:-1;max-width:460px;margin:0 auto;width:100%}}
+/* cabeçalho da equipe */
+.teamhero{background:linear-gradient(115deg,#ffffff 0%,#f6f2ff 55%,#eef8f1 100%);border:1px solid var(--line);border-radius:22px;padding:14px 20px;box-shadow:var(--sh);align-items:center}
+.teamhero .th-l{display:flex;gap:16px;align-items:center;min-width:0;flex:1}
+.teamhero .th-l>svg{flex:none}
+.motiv{margin:.35em 0 0;font-weight:600;color:#4a3592;text-align:left;max-width:60ch}
+@keyframes grow{from{transform:scale(.55);opacity:.2}to{transform:scale(1);opacity:1}}
+.grow{transform-origin:60px 106px;animation:grow 1s cubic-bezier(.2,.8,.2,1)}
+@media(max-width:620px){.teamhero{padding:12px 14px}.teamhero .th-l>svg{width:72px;height:72px}}
+/* floresta da turma */
+.forest .trees{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:flex-end;justify-content:center;padding:10px 6px 0;border-bottom:8px solid #cfe7d6;border-radius:0 0 12px 12px;background:linear-gradient(#ffffff00 40%,#eaf6ee)}
+.forest .tree{display:flex;flex-direction:column;align-items:center;width:112px;text-align:center;font-size:.8rem;line-height:1.25;padding-bottom:6px}
+.forest .tree b{display:block;max-width:108px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:2px}
+.forest .tree span{color:var(--muted)}
+.forest .legend-t{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.8rem;color:var(--muted);margin:2px 0 8px}
+.forest .legend-t span{display:inline-flex;align-items:center;gap:4px}
+.empty-art{display:flex;gap:14px;align-items:center}.empty-art svg{flex:none}
+@media(max-width:620px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.kpi{padding:12px 12px 10px}.kpi .ki{width:28px;height:28px;right:8px;top:8px;border-radius:9px}.kpi .ki .ic{width:16px;height:16px}.kpi .l{padding-right:30px;font-size:.78rem}.kpi .s{font-size:.74rem}.kpi .fig{font-size:1.15rem;overflow-wrap:anywhere}.forest .tree{width:96px}}
+.motiv{hyphens:manual;-webkit-hyphens:manual}
+@media (prefers-reduced-motion:reduce){.grow{animation:none}.card:hover{transform:none}}
 </style>
 </head>
 <body>
@@ -351,7 +415,7 @@ function fbAdapter(root){
   return{doc:p=>({get:async()=>{const v=await req('GET',p);return{exists:v!=null,data:()=>v}},set:d=>req('PUT',p,d),update:d=>req('PATCH',p,d),delete:()=>req('DELETE',p),onSnapshot:n=>watch(p,c=>n({exists:c!=null,data:()=>c}))}),
     collection:p=>({onSnapshot:n=>watch(p,c=>n({docs:Object.entries(c||{}).filter(([,v])=>v&&typeof v==='object').map(([id,v])=>({id,data:()=>v}))}))})}}
 const LSKEY='mostra_ps_v1';
-let LS={cfg:null,teams:{},evals:{},pub:{},my:[],msgs:{},arqIdx:{},arq:{},seen:{},arqTxt:{},codes:{}};
+let LS={cfg:null,teams:{},evals:{},pub:{},my:[],msgs:{},arqIdx:{},arq:{},seen:{},arqTxt:{},codes:{},who:{},ativ:{}};
 try{const r=localStorage.getItem(LSKEY);if(r)LS=Object.assign(LS,JSON.parse(r))}catch(e){}
 const saveLS=()=>{try{localStorage.setItem(LSKEY,JSON.stringify(LS))}catch(e){}};
 const S={db:null,user:null,dl:null,ready:false,hosted:!!(window.claude&&window.claude.use),shared:{},cfgDoc:null,evals:{},pub:{},isProf:false,readOnly:false,msgs:{},arqIdx:{},arq:{},arqId:null,arqTeam:null,arqTxt:{},legado:{},leg:null,legFiles:{},
@@ -367,6 +431,44 @@ const codes=()=>S.db?(S.codes||{}):LS.codes;
 const myKey=t=>t.id+':'+(t.code||'');const isMine=t=>LS.my.includes(myKey(t));function addMine(t){LS.my=LS.my.filter(k=>k.split(':')[0]!==t.id);LS.my.push(myKey(t));saveLS()}
 async function saveCode(id,plain){const o={c:plain,at:Date.now()};if(S.db){(S.codes||={})[id]=o;try{await S.db.doc('codes/'+id).set(o)}catch(e){}}else{LS.codes[id]=o;saveLS()}}
 const msgs=()=>S.db?S.msgs:LS.msgs;
+/* ---- participação dos integrantes ---- */
+const ativ=()=>S.db?(S.ativ||={}):(LS.ativ||={});
+const mkey=n=>'m'+hash(toks(n||'').join(' '));
+const TRACK=new Set(['p1','p2','p3','p4','p5','p6','p7','p8','p9','p10','p11','p12','p13','p14','orc','refs','m2','chk','info','pdf']);
+const TXTK=new Set(['p1','p2','p3','p4','p5','p6','p7','p11','p13','p14','refs']);
+const baseW={};
+function textWords(t,k){const v=t[k];if(k==='p5')return words((v?.geral||'')+' '+(v?.metas||[]).join(' '));if(v&&typeof v==='object')return words(Object.values(v).join(' '));return words(v)}
+function noteBase(t,top){if(!TXTK.has(top))return;const bk=t.id+'|'+top;if(!(bk in baseW))baseW[bk]=textWords(t,top)}
+async function recordAtiv(id,keys){if(S.isProf&&S.asProf)return;const t=T(id);if(!t||!t.info)return;
+  const ks=[...new Set(keys.map(k=>k==='ilu'?(S.teamId===id&&S.tab==='projeto'?S.sec:''):k).filter(k=>TRACK.has(k)))];if(!ks.length)return;
+  const mk=(LS.who||{})[id]||'anon',A=ativ(),r=clone((A[id]||{})[mk])||{s:{},first:Date.now()},now=Date.now();r.s||={};
+  r.nome=mk==='anon'?'Não identificado':((t.info.membros||[]).find(m=>mkey(m.nome)===mk)?.nome||r.nome||'Integrante');
+  ks.forEach(k=>{const e=r.s[k]||={n:0,w:0};e.n=(+e.n||0)+1;e.at=now;const bk=id+'|'+k;if(bk in baseW){const dw=textWords(t,k)-baseW[bk];if(dw>0)e.w=(+e.w||0)+dw;delete baseW[bk]}});r.last=now;
+  (A[id]||={})[mk]=r;if(S.db&&!isLocalTeam(id)){try{await S.db.doc('ativ/'+id+'/'+mk).set(clone(r))}catch(e){}}else saveLS()}
+function respOf(t,k,ms){const txt=toks(t.chk?.[k]?.r||'').join(' ');if(!txt)return[];
+  return ms.filter(m=>{const w=toks(m.nome);if(!w.length)return false;return(' '+txt+' ').includes(' '+w.join(' ')+' ')||(' '+txt+' ').includes(' '+w[0]+' ')})}
+function partData(t){const ms=(t.info.membros||[]).filter(m=>(m.nome||'').trim()).map(m=>({nome:m.nome.trim(),mk:mkey(m.nome)})),A=(ativ()[t.id])||{},rows=chkRows().filter(r=>!r.fix);
+  const recN=r=>Object.values(r?.s||{}).reduce((a,e)=>a+(+e.n||0),0),recW=r=>Object.values(r?.s||{}).reduce((a,e)=>a+(+e.w||0),0);
+  const tot=Object.values(A).reduce((a,r)=>a+recN(r),0),firsts=Object.values(A).map(r=>r.first).filter(Boolean);
+  const acts=rows.map(r=>{const resp=respOf(t,r.k,ms),eds=Object.entries(A).map(([mk,rec])=>({mk,nome:rec.nome||'Integrante',n:+(rec.s?.[r.k]?.n||0)})).filter(x=>x.n).sort((a,b)=>b.n-a.n),sum=eds.reduce((a,x)=>a+x.n,0);
+    const st=t.chk?.[r.k]?.s||'',fl=[];if(!resp.length)fl.push(['warn','Sem responsável no checklist']);
+    if(resp.length&&sum&&!eds.some(e=>resp.some(m=>m.mk===e.mk)))fl.push(['bad','Editada só por quem não é responsável']);
+    if(resp.length&&st==='C'&&!resp.some(m=>eds.some(e=>e.mk===m.mk)))fl.push(['bad','Marcada como concluída sem edição registrada do responsável']);
+    return{...r,resp,eds,sum,st,fl}});
+  const mem=ms.map(m=>{const rec=A[m.mk],n=recN(rec),mine=acts.filter(a=>a.resp.some(x=>x.mk===m.mk));
+    return{...m,n,w:recW(rec),share:tot?n/tot:0,last:rec?.last||0,secs:Object.keys(rec?.s||{}).filter(k=>TRACK.has(k)),resp:mine.length,conc:mine.filter(a=>a.st==='C').length,doneBy:mine.filter(a=>a.eds.some(e=>e.mk===m.mk)).length}});
+  const k=ms.length,top=mem.slice().sort((a,b)=>b.n-a.n)[0],alerts=[];
+  mem.forEach(m=>{m.status=!m.n?(m.resp?['bad','Tem ações no checklist, mas nenhuma edição registrada']:['bad','Sem participação registrada']):k>1&&m.share<1/(2*k)?['warn','Participação baixa']:['ok','Participando']});
+  if(tot&&k>=2&&top&&top.share>=(k===2?0.75:0.6))alerts.push(['bad',`${esc(top.nome)} fez ${Math.round(top.share*100)}% das edições registradas da equipe.`]);
+  const none=mem.filter(m=>!m.n);if(tot&&none.length)alerts.push(['bad',`Sem edição registrada: ${none.map(m=>esc(m.nome)).join(', ')}.`]);
+  const semResp=acts.filter(a=>!a.resp.length).length;if(semResp)alerts.push(['warn',`${semResp} de ${acts.length} ações do checklist estão sem responsável.`]);
+  const conf=acts.filter(a=>a.fl.some(f=>f[0]==='bad')).length;if(conf)alerts.push(['bad',`${conf} ação(ões) com divergência entre o responsável no checklist e quem de fato editou.`]);
+  if(A.anon&&recN(A.anon))alerts.push(['warn',`${recN(A.anon)} edição(ões) feitas sem identificação do integrante.`]);
+  return{ms,mem,acts,tot,alerts,since:firsts.length?Math.min(...firsts):0,anon:A.anon?recN(A.anon):0}}
+function pickWho(t){return new Promise(res=>{const d=$('#dlg'),ms=(t.info.membros||[]).filter(m=>(m.nome||'').trim());if(!ms.length){res('');return}
+  d.innerHTML=`<h3>Quem está usando a plataforma agora?</h3><p class="muted">Escolha o seu nome. A plataforma registra em quais seções você trabalha, para a equipe e o professor acompanharem a participação de cada integrante. Escolha sempre o próprio nome.</p><div style="display:grid;gap:8px;margin-top:12px">${ms.map(m=>`<button class="btn ghost" data-who="${esc(mkey(m.nome))}">${esc(m.nome)}</button>`).join('')}</div><div class="row" style="justify-content:flex-end;margin-top:14px"><button class="btn ghost sm" data-who="">Agora não</button></div>`;
+  d.querySelectorAll('[data-who]').forEach(b=>b.addEventListener('click',()=>{d.close();res(b.dataset.who)}));d.oncancel=ev=>{ev.preventDefault();d.close();res('')};d.showModal()})}
+async function askWho(t){const v=await pickWho(t);(LS.who||={});if(v)LS.who[t.id]=v;else delete LS.who[t.id];saveLS();render()}
 const arqIdx=()=>S.db?S.arqIdx:LS.arqIdx;
 const arqTxt=()=>S.db?S.arqTxt:LS.arqTxt;
 const legado=()=>S.db?S.legado:{};
@@ -391,6 +493,60 @@ function simFor(t,k){const a=simTxt(t,k),min=k==='p1'?2:12;if(toks(a).length<min
     if(typeof e[k]==='string'){const c=shOf(aid+'/'+tid+'/'+k,e[k]);if(c.n>=min)test(c.s,Math.min(A.size,c.s.size),e.n||'',e.y||'anterior')}
     else if(typeof e.all==='string'&&k!=='p1'){const c=shOf(aid+'/'+tid+'/all',e.all);test(c.s,A.size,e.n||'',e.y||'anterior')}}
   return best}
+/* ---- monitor de similaridade com edições anteriores ---- */
+const PREV_MIN=0.5;
+function prevDocs(){const out=[];for(const[aid,doc]of Object.entries(arqTxt()))for(const[tid,e]of Object.entries(doc||{})){if(!e||typeof e!=='object')continue;
+  const secs={};let all='';if(typeof e.all==='string')all=e.all;else SIMK.forEach(([k])=>{if(typeof e[k]==='string'&&k!=='p1'){secs[k]=e[k];all+='\n'+e[k]}});
+  if(all.trim())out.push({key:aid+'/'+tid,name:e.n||'',y:e.y||'anterior',secs,all})}return out}
+function prevCheck(t){const docs=prevDocs();if(!docs.length)return null;const sec={};
+  SIMK.forEach(([k,l])=>{if(k==='p1')return;const a=simTxt(t,k);if(toks(a).length<12)return;const A=shing(a);if(!A.size)return;let best=null;
+    docs.forEach(d=>{const own=d.secs[k]!=null,src=own?d.secs[k]:d.all,c=shOf(d.key+'/'+(own?k:'all'),src);if(!c.s.size)return;let n=0;A.forEach(x=>{if(c.s.has(x))n++});
+      const v=n/(own?Math.min(A.size,c.s.size):A.size);if(!best||v>best.s)best={s:v,y:d.y,name:d.name}});
+    if(best)sec[k]={...best,l}});
+  const txt=SIMK.filter(([k])=>k!=='p1').map(([k])=>simTxt(t,k)).join('\n');let g=null;
+  if(toks(txt).length>=40){const A=shing(txt);docs.forEach(d=>{const c=shOf(d.key+'/all*',d.all);if(!c.s.size)return;let n=0;A.forEach(x=>{if(c.s.has(x))n++});const v=n/A.size;if(!g||v>g.s)g={s:v,y:d.y,name:d.name,l:'Projeto como um todo'}})}
+  return{sec,g}}
+/* ---- indicador de similaridade (edições anteriores e equipes desta edição) ---- */
+function curCheck(t){const others=Object.values(teams()).filter(o=>o&&o.id!==t.id&&o.info),sec={};
+  SIMK.forEach(([k,l])=>{if(k==='p1')return;const a=simTxt(t,k);if(toks(a).length<12)return;const A=shing(a);if(!A.size)return;let best=null;
+    others.forEach(o=>{const b=simTxt(o,k);if(toks(b).length<12)return;const c=shOf('cur/'+o.id+'/'+k,b);let n=0;A.forEach(x=>{if(c.s.has(x))n++});const v=n/Math.min(A.size,c.s.size);if(!best||v>best.s)best={s:v,name:o.info.startup||''}});
+    if(best)sec[k]={...best,l}});
+  const txt=SIMK.filter(([k])=>k!=='p1').map(([k])=>simTxt(t,k)).join('\n');let g=null;
+  if(toks(txt).length>=40){const A=shing(txt);others.forEach(o=>{const b=SIMK.filter(([k])=>k!=='p1').map(([k])=>simTxt(o,k)).join('\n');if(toks(b).length<12)return;const c=shOf('cur/'+o.id+'/all',b);let n=0;A.forEach(x=>{if(c.s.has(x))n++});const v=n/A.size;if(!g||v>g.s)g={s:v,name:o.info.startup||''}})}
+  return{sec,g}}
+const SIM_LV=[[0.2,'Baixa',0],[0.4,'Moderada',1],[0.5,'Atenção',2],[2,'Alta',3]];
+const simLevel=v=>v==null?['Texto insuficiente','x']:(SIM_LV.find(x=>v<x[0])||SIM_LV[3]).slice(1);
+function simReport(t){const pv=prevCheck(t)||{sec:{},g:null},cu=curCheck(t),words0=toks(SIMK.filter(([k])=>k!=='p1').map(([k])=>simTxt(t,k)).join(' ')).length;
+  const gp=pv.g?pv.g.s:(words0>=40&&Object.keys(arqTxt()).length?0:null),gc=cu.g?cu.g.s:(words0>=40?0:null);
+  const ind=gp==null&&gc==null?null:Math.max(gp||0,gc||0);
+  const rows=SIMK.filter(([k])=>k!=='p1').map(([k,l])=>({k,l,p:pv.sec[k]||null,c:cu.sec[k]||null,has:toks(simTxt(t,k)).length>=12}));
+  return{ind,gp,gc,pv,cu,rows,words:words0}}
+function simBadge(t,act=true){const r=simReport(t),[lab,cl]=simLevel(r.ind);return`<span class="simbadge sim-${cl}" ${act?'data-act="tab" data-v="sim"':''} title="Indicador de similaridade">Similaridade: ${r.ind==null?'—':Math.round(r.ind*100)+'%'} · ${lab}</span>`}
+function tSim(t){const r=simReport(t),[lab,cl]=simLevel(r.ind),pc=v=>v==null?'—':Math.round(v*100)+'%',who=x=>S.isProf?esc(x.name||''):'';
+  const cell=(x,y)=>x?`<span class="simbadge sim-${simLevel(x.s)[1]}" style="cursor:default">${pc(x.s)}</span><div class="small muted">${y(x)}</div>`:'<span class="muted">—</span>';
+  return`<div class="panel"><h3>Indicador de similaridade</h3>
+  <p class="muted">Mostra quanto do texto do projeto coincide com projetos de edições anteriores da Mostra e com os projetos das outras equipes desta edição. Atualiza sozinho a cada salvamento.</p>
+  <div class="row spread" style="align-items:flex-end;margin-top:8px"><div><div class="muted small">Similaridade do projeto</div><div class="fig">${pc(r.ind)} <span class="simbadge sim-${cl}" style="cursor:default;vertical-align:middle">${lab}</span></div></div>
+   <div class="small muted" style="text-align:right">Edições anteriores: <b>${pc(r.gp)}</b>${r.pv.g&&r.pv.g.s>0?` (edição de ${esc(r.pv.g.y)}${S.isProf?', '+esc(r.pv.g.name):''})`:''}<br>Equipes desta edição: <b>${pc(r.gc)}</b>${S.isProf&&r.cu.g&&r.cu.g.s>0?` (${esc(r.cu.g.name)})`:''}</div></div>
+  <div class="simg">${r.ind!=null?`<i style="width:${Math.min(100,r.ind*100)}%"></i>`:''}<span class="mk" style="left:40%"></span><span class="mk" style="left:50%"></span></div>
+  <div class="simscale"><span>0%</span><span>20% baixa</span><span>40% atenção</span><span>50% alta</span><span>100%</span></div>
+  ${r.ind==null?'<div class="note info" style="margin-top:12px">O indicador aparece quando o projeto tiver pelo menos 40 palavras nas seções de texto.</div>':r.ind>=0.5?'<div class="note bad" style="margin-top:12px"><strong>Similaridade alta.</strong> Revisem as seções destacadas abaixo e reescrevam com as palavras, os dados e a realidade da organização de vocês.</div>':r.ind>=0.4?'<div class="note" style="margin-top:12px"><strong>Atenção.</strong> Parte do texto coincide com outro projeto; revisem as seções destacadas.</div>':'<div class="note ok" style="margin-top:12px">O texto do projeto é próprio da equipe até aqui.</div>'}
+  <h4 style="margin:16px 0 6px">Por seção</h4><div class="scroll"><table><thead><tr><th>Seção</th><th>Edições anteriores</th><th>Equipes desta edição</th></tr></thead><tbody>
+  ${r.rows.map(x=>`<tr><td>${esc(x.l)}</td><td>${x.has?cell(x.p,p=>`edição de ${esc(p.y)}${S.isProf&&p.name?', '+esc(p.name):''}`):'<span class="muted small">texto insuficiente</span>'}</td><td>${x.has?cell(x.c,c=>S.isProf?esc(c.name):'outra equipe'):'<span class="muted small">texto insuficiente</span>'}</td></tr>`).join('')}</tbody></table></div>
+  <p class="small muted" style="margin-top:10px">Como é calculado: o texto é dividido em sequências de três palavras, e conta-se quantas aparecem também no outro projeto. O percentual de cada seção é medido contra a seção correspondente do outro projeto (ou contra o PDF inteiro, no caso dos projetos antigos em PDF); o do projeto, contra o texto completo do projeto mais parecido. Faixas: até 20% baixa, de 20% a 40% moderada, de 40% a 50% atenção, a partir de 50% alta (a equipe recebe também uma mensagem automática). Tabelas, figuras, orçamento e cronograma não entram no cálculo, nem PDFs antigos cujo texto não pôde ser lido. Trechos comuns, como nomes de leis ou de programas, podem elevar um pouco o valor.</p></div>`}
+const monT={};let monAllT;
+function monitorSoon(id,ms=2500){clearTimeout(monT[id]);monT[id]=setTimeout(()=>monitor(id).catch(()=>{}),ms)}
+function monitorAllSoon(){clearTimeout(monAllT);monAllT=setTimeout(()=>Object.keys(teams()).forEach((id,i)=>monitorSoon(id,200+i*150)),5000)}
+async function monitor(id){const t=T(id);if(!t||!t.info)return;norm(t);const r=prevCheck(t);if(!r)return;
+  const old=t.alertas&&typeof t.alertas==='object'?t.alertas:{},nw={},hits=[],now=Date.now();
+  const all={...(r.g?{g:r.g}:{}),...r.sec};
+  for(const[k,v]of Object.entries(all)){const p=Math.round(v.s*100),o=old[k];
+    if(v.s>=PREV_MIN){if(!o||p>=o.p+10){hits.push({k,p,...v});nw[k]={p,y:v.y,n:v.name,at:now}}else nw[k]=o}
+    else if(o&&v.s>=0.4)nw[k]=o}
+  if(JSON.stringify(nw)!==JSON.stringify(old)){t.alertas=nw;markDirty(id,'alertas')}
+  if(!hits.length)return;hits.sort((a,b)=>(a.k==='g'?-1:b.k==='g'?1:b.p-a.p));
+  const lin=hits.map(h=>`- ${h.l}: cerca de ${h.p}% do conteúdo coincide com um projeto da edição de ${h.y}.`).join('\n');
+  await sendMsg(id,'sys',`Alerta automático de similaridade.\n\nO projeto de vocês está muito parecido com projeto(s) de edições anteriores da Mostra:\n${lin}\n\nRecomendamos revisar essas partes e reescrevê-las com as palavras, os dados e a realidade da organização de vocês. Consultar projetos anteriores como referência é permitido, mas o texto precisa ser próprio da equipe. O professor também recebe este aviso.`)}
 const simAll=t=>SIMK.map(([k,l])=>({k,l,r:simFor(t,k)})).filter(x=>x.r);
 const sameOrg=t=>{const n=toks(t.info?.org||'').join(' ');return n?Object.values(teams()).filter(o=>o&&o.id!==t.id&&toks(o.info?.org||'').join(' ')===n):[]};
 function simNote(t,k){const r=SIMK.some(x=>x[0]===k)?simFor(t,k):null;if(!r)return'';
@@ -407,29 +563,30 @@ async function closeMostra(){const c=cfg(),ts=teams();let id=String(c.ano||new D
   if(S.db){await S.db.doc('arquivo/'+id).set(data);await S.db.doc('arquivo_prof/'+id).set({at:data.at,evals:clone(evals()),msgs:clone(msgs())});
     const chk=await S.db.doc('arquivo/'+id).get();if(!chk.exists)throw new Error('arquivo não gravado');
     await S.db.doc('arquivo_txt/'+id).set(tx);await S.db.doc('arquivo_idx/'+id).set(idx);
-    await Promise.all([...Object.keys(S.shared).map(k=>S.db.doc('teams/'+k).delete()),...Object.keys(S.evals).map(k=>S.db.doc('evals/'+k).delete()),...Object.keys(S.pub).map(k=>S.db.doc('public/'+k).delete()),...Object.keys(S.msgs).map(k=>S.db.doc('msgs/'+k).delete()),...Object.keys(S.codes||{}).map(k=>S.db.doc('codes/'+k).delete())]);S.codes={};
+    await Promise.all([...Object.keys(S.shared).map(k=>S.db.doc('teams/'+k).delete()),...Object.keys(S.evals).map(k=>S.db.doc('evals/'+k).delete()),...Object.keys(S.pub).map(k=>S.db.doc('public/'+k).delete()),...Object.keys(S.msgs).map(k=>S.db.doc('msgs/'+k).delete()),...Object.keys(S.codes||{}).map(k=>S.db.doc('codes/'+k).delete()),...Object.keys(S.ativ||{}).map(k=>S.db.doc('ativ/'+k).delete())]);S.codes={};S.ativ={};
     S.shared={};S.evals={};S.pub={};S.msgs={};S.arqIdx[id]=idx}
   else{LS.arq[id]=data;LS.arqIdx[id]=idx;LS.arqTxt[id]=tx;LS.evals={};LS.pub={};LS.msgs={}}
   LS.teams={};LS.my=[];saveLS();S.arq[id]=data;await saveCfg(next);return id}
 const q={};function queue(path,fn){q[path]=(q[path]||Promise.resolve()).then(fn);return q[path]}
 const dirty={};let saveT;
-function markDirty(id,key){(dirty[id]??=new Set()).add(key);{const t0=T(id);if(t0&&!['chk','envio','final','code','projAt','homol'].includes(key)){t0.projAt=Date.now();dirty[id].add('projAt')}}setSave('pend');clearTimeout(saveT);saveT=setTimeout(flush,1100)}
+function markDirty(id,key){(dirty[id]??=new Set()).add(key);{const t0=T(id);if(t0&&!['chk','envio','final','code','projAt','homol','alertas'].includes(key)){t0.projAt=Date.now();dirty[id].add('projAt')}}setSave('pend');clearTimeout(saveT);saveT=setTimeout(flush,1100)}
 function setSave(s){S.save=s;renderStatus()}
-async function flush(){
-  for(const id of Object.keys(dirty)){const keys=[...dirty[id]];if(!keys.length)continue;const t=T(id);dirty[id]=new Set();if(!t)continue;
+async function flush(){const flushed={},fl0=false;
+  for(const id of Object.keys(dirty)){const keys=[...dirty[id]];if(!keys.length)continue;if(keys.some(k=>SIMK.some(x=>x[0]===k)))flushed[id]=1;const t=T(id);dirty[id]=new Set();if(!t)continue;
     t.updatedAt=Date.now();
-    if(isLocalTeam(id)||!S.db){saveLS();continue}
+    if(isLocalTeam(id)||!S.db){saveLS();recordAtiv(id,keys);continue}
     const patch={updatedAt:t.updatedAt};keys.forEach(k=>patch[k]=clone(t[k]));
-    try{await queue('teams/'+id,()=>S.db.doc('teams/'+id).update(patch))}
+    try{await queue('teams/'+id,()=>S.db.doc('teams/'+id).update(patch));recordAtiv(id,keys)}
     catch(e){if(e&&e.code==='invalid_argument'){goLocal(id)}else{keys.forEach(k=>dirty[id].add(k));setSave('err');clearTimeout(saveT);saveT=setTimeout(flush,6000);return}}
   }
   setSave('ok');
+  if(!fl0)Object.keys(flushed).forEach(id=>monitorSoon(id));
 }
 function goLocal(id){S.readOnly=true;const t=S.shared[id];if(t){LS.teams[id]=clone(t);saveLS()}toast('Sem permissão de escrita no banco compartilhado. Seu trabalho fica salvo neste navegador.');render()}
 async function createTeam(t){
   if(S.db&&!S.readOnly){try{await queue('teams/'+t.id,()=>S.db.doc('teams/'+t.id).set(clone(t)));S.shared[t.id]=t;return 'shared'}catch(e){S.readOnly=true}}
   LS.teams[t.id]=t;saveLS();return 'local'}
-async function deleteTeam(id){if(LS.teams[id]){delete LS.teams[id];saveLS()}if(S.db&&S.shared[id]){await S.db.doc('teams/'+id).delete();delete S.shared[id];S.db.doc('codes/'+id).delete().catch(()=>{})}}
+async function deleteTeam(id){if(LS.teams[id]){delete LS.teams[id];saveLS()}if(S.db&&S.shared[id]){await S.db.doc('teams/'+id).delete();delete S.shared[id];S.db.doc('codes/'+id).delete().catch(()=>{});S.db.doc('ativ/'+id).delete().catch(()=>{})}}
 async function saveCfg(c){if(S.fb&&!c.profHash&&S.cfgDoc?.profHash)c.profHash=S.cfgDoc.profHash;if(S.db){await S.db.doc('config/edital').set(clone(c));S.cfgDoc=c}else{LS.cfg=c;saveLS()}}
 async function saveEval(id){const e=evals()[id];if(!e)return;e.updatedAt=Date.now();if(S.db)await queue('evals/'+id,()=>S.db.doc('evals/'+id).set(clone(e)));else saveLS()}
 async function savePub(name,data){if(S.db){if(data)await S.db.doc('public/'+name).set(clone(data));else await S.db.doc('public/'+name).delete();if(data)S.pub[name]=data;else delete S.pub[name]}else{if(data)LS.pub[name]=data;else delete LS.pub[name];saveLS()}}
@@ -456,11 +613,12 @@ function subscribe(){const db=S.db;{
     db.doc('config/edital').onSnapshot(s=>{S.cfgDoc=s.exists?clone(s.data()):null;softRender()},dbErr);
     db.collection('teams').onSnapshot(s=>{const m={};s.docs.forEach(d=>{const t=clone(d.data());t.id=d.id;const old=S.shared[d.id],dk=dirty[d.id];
         if(old&&dk&&dk.size)dk.forEach(k=>t[k]=old[k]);m[d.id]=t});
-      S.shared=m;softRender()},dbErr);
+      S.shared=m;if(S.isProf)monitorAllSoon();softRender()},dbErr);
     db.collection('public').onSnapshot(s=>{const m={};s.docs.forEach(d=>m[d.id]=clone(d.data()));S.pub=m;softRender()},dbErr);
+    db.collection('ativ').onSnapshot(s=>{const m={};s.docs.forEach(d=>m[d.id]=clone(d.data()));S.ativ=m;softRender()},dbErr);
     db.collection('msgs').onSnapshot(s=>{const m={};s.docs.forEach(d=>m[d.id]=clone(d.data()));S.msgs=m;softRender()},dbErr);
     db.collection('arquivo_idx').onSnapshot(s=>{const m={};s.docs.forEach(d=>m[d.id]=clone(d.data()));S.arqIdx=m;softRender()},dbErr);
-    db.collection('arquivo_txt').onSnapshot(s=>{const m={};s.docs.forEach(d=>m[d.id]=d.data());S.arqTxt=m;shCache.clear();softRender()},dbErr);
+    db.collection('arquivo_txt').onSnapshot(s=>{const m={};s.docs.forEach(d=>m[d.id]=d.data());S.arqTxt=m;shCache.clear();if(S.isProf)monitorAllSoon();else if(S.teamId)monitorSoon(S.teamId,4000);softRender()},dbErr);
     db.collection('legado').onSnapshot(s=>{const m={};s.docs.forEach(d=>m[d.id]=clone(d.data()));S.legado=m;softRender()},dbErr);
   }}
 function dbErr(e){if(e&&e.code==='revoked'){S.db=null;toast('A conexão com o banco compartilhado foi encerrada.');render()}}
@@ -548,7 +706,12 @@ async function planXlsx(t){const zip=await JSZip.loadAsync(unb64(XLSX_B64)),f='x
   return zip.generateAsync({type:'uint8array',compression:'DEFLATE'})}
 /* ============ componentes de formulário ============ */
 const DIS=()=>canEditProj()?'':'disabled';
-const inp=(p,v,o={})=>`<input type="${o.type||'text'}" data-path="${p}" value="${esc(v??'')}" ${o.scope?`data-scope="${o.scope}"`:''} ${o.ph?`placeholder="${esc(o.ph)}"`:''} ${o.list?`list="${o.list}"`:''} ${o.attr||''} ${o.dis??''} aria-label="${esc(o.al||'')}">`;
+const FMT={date:{ph:'dd/mm/aaaa',len:10,to:v=>{const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(v||'');return m?`${m[3]}/${m[2]}/${m[1]}`:''},from:x=>{const m=/^(\d{2})\/(\d{2})\/(\d{4})$/.exec(x);if(!m)return null;const d=new Date(+m[3],m[2]-1,+m[1]);return d.getFullYear()==m[3]&&d.getMonth()==m[2]-1&&d.getDate()==+m[1]?`${m[3]}-${m[2]}-${m[1]}`:null},mask:[2,4]},
+  time:{ph:'hh:mm',len:5,to:v=>/^\d{2}:\d{2}/.test(v||'')?v.slice(0,5):'',from:x=>/^([01]\d|2[0-3]):[0-5]\d$/.test(x)?x:null,mask:[2],sep:':'},
+  month:{ph:'mm/aaaa',len:7,to:v=>{const m=/^(\d{4})-(\d{2})$/.exec(v||'');return m?`${m[2]}/${m[1]}`:''},from:x=>{const m=/^(0[1-9]|1[0-2])\/(\d{4})$/.exec(x);return m?`${m[2]}-${m[1]}`:null},mask:[2]}};
+const fmtBR=v=>FMT.date.to(v);
+function maskFmt(el){const f=FMT[el.dataset.fmt],sep=f.sep||'/',d=el.value.replace(/\D/g,'').slice(0,f.len-f.mask.length);let o='',i=0;for(let j=0;j<d.length;j++){if(f.mask.includes(j)&&j)o+=sep;o+=d[j]}el.value=o}
+const inp=(p,v,o={})=>FMT[o.type]?`<input type="text" inputmode="numeric" autocomplete="off" data-fmt="${o.type}" maxlength="${FMT[o.type].len}" data-path="${p}" value="${esc(FMT[o.type].to(v))}" placeholder="${FMT[o.type].ph}" ${o.scope?`data-scope="${o.scope}"`:''} ${o.attr&&!/min=|max=|step=/.test(o.attr)?o.attr:''} ${o.dis??''} aria-label="${esc(o.al||FMT[o.type].ph)}">`:`<input type="${o.type||'text'}" data-path="${p}" value="${esc(v??'')}" ${o.scope?`data-scope="${o.scope}"`:''} ${o.ph?`placeholder="${esc(o.ph)}"`:''} ${o.list?`list="${o.list}"`:''} ${o.attr||''} ${o.dis??''} aria-label="${esc(o.al||'')}">`;
 const sel=(p,v,opts,o={})=>`<select data-path="${p}" ${o.scope?`data-scope="${o.scope}"`:''} ${o.dis??''} aria-label="${esc(o.al||'')}">${o.blank===false?'':'<option value="">Selecione</option>'}${opts.map(x=>{const[a,b]=Array.isArray(x)?x:[x,x];return`<option value="${esc(a)}" ${String(v??'')===String(a)?'selected':''}>${esc(b)}</option>`}).join('')}</select>`;
 const ta=(p,v,o={})=>`<textarea data-path="${p}" class="${o.cls||''}" ${o.scope?`data-scope="${o.scope}"`:''} ${o.dis??''} aria-label="${esc(o.al||'')}">${esc(v??'')}</textarea>`;
 function tableEd(key,cols,rows,dis){return`<div class="scroll"><table class="ed"><thead><tr>${cols.map(c=>`<th>${esc(c.l)}</th>`).join('')}<th></th></tr></thead><tbody>
@@ -563,10 +726,72 @@ function renderStatus(){const c=cfg();
   const sv={ok:'Tudo salvo',pend:'Salvando…',err:'Falha ao salvar; tentando de novo'}[S.save];
   $('#h-status').innerHTML=`<b>${esc(mode)}</b><br>${esc(sv)}`}
 function renderNav(){const items=[['edital','Edital'],['dash','Dashboard'],['equipe','Área da equipe']];if(Object.keys(arqIdx()).length||Object.keys(legado()).length||S.isProf)items.push(['arq','Edições anteriores']);if(S.isProf||S.fb)items.push(['prof','Área do professor']);
-  $('#nav').innerHTML=items.map(([k,l])=>`<button data-act="view" data-v="${k}" ${S.view===k?'aria-current="page"':''}>${l}</button>`).join('')}
+  $('#nav').innerHTML=items.map(([k,l])=>`<button data-act="view" data-v="${k}" ${S.view===k?'aria-current="page"':''}>${ic(NAVI[k])}<span>${l}</span></button>`).join('')}
 function render(){renderStatus();renderNav();const a=$('#app');const y=window.scrollY;
-  a.innerHTML=S.view==='prof'&&S.isProf?vProf():S.view==='equipe'?vEquipe():S.view==='arq'?vArq():S.view==='dash'?vDash():vEdital();window.scrollTo(0,y);hydrate();profLock()}
+  a.innerHTML=S.view==='prof'&&S.isProf?vProf():S.view==='equipe'?vEquipe():S.view==='arq'?vArq():S.view==='dash'?vDash():vEdital();window.scrollTo(0,y);hydrate();profLock();fixFiles()}
 
+function fixFiles(){$$('#app input[type=file]').forEach(fi=>{if(fi.hidden||fi.dataset.fx)return;fi.dataset.fx=1;fi.style.display='none';const w=document.createElement('span');w.className='fileline';
+  w.innerHTML=`<button type="button" class="btn ghost sm">${fi.multiple?'Escolher arquivos':'Escolher arquivo'}</button><span class="small muted">Nenhum arquivo escolhido</span>`;fi.after(w);
+  w.querySelector('button').addEventListener('click',ev=>{ev.preventDefault();ev.stopPropagation();fi.click()});fi.addEventListener('change',()=>{const n=[...fi.files].map(f=>f.name).join(', ');w.querySelector('span').textContent=n||'Nenhum arquivo escolhido'})})}
+
+/* ============ ícones e ilustrações ============ */
+const ICP={users:'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+ file:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/>',
+ chart:'<path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/>',
+ archive:'<rect x="2" y="3" width="20" height="5" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"/><path d="M10 12h4"/>',
+ cap:'<path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>',
+ card:'<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M15 10h3M15 14h3M6 17c.5-1.5 1.7-2 3-2s2.5.5 3 2"/>',
+ checks:'<path d="m3 17 2 2 4-4"/><path d="m3 7 2 2 4-4"/><path d="M13 6h8M13 12h8M13 18h8"/>',
+ pie:'<path d="M21.2 15.9A10 10 0 1 1 8 2.8"/><path d="M22 12A10 10 0 0 0 12 2v10z"/>',
+ pen:'<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/>',
+ slides:'<path d="M2 3h20"/><path d="M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3"/><path d="m7 21 5-5 5 5"/>',
+ send:'<path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/>',
+ scan:'<path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/>',
+ msg:'<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
+ sliders:'<path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/>',
+ star:'<path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/>',
+ trophy:'<path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/>',
+ book:'<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V2H6.5A2.5 2.5 0 0 0 4 4.5z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/>',
+ flag:'<path d="M4 22V4c1-.7 2.3-1.4 4-1.4 3 0 5 2 8 2 1.3 0 2.3-.3 3-.6V14c-.7.3-1.7.6-3 .6-3 0-5-2-8-2-1.7 0-3 .7-4 1.4"/>',
+ db:'<ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.7 4 3 9 3s9-1.3 9-3V5"/><path d="M3 12c0 1.7 4 3 9 3s9-1.3 9-3"/>',
+ check:'<circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/>',
+ coins:'<circle cx="8" cy="8" r="6"/><path d="M18.1 10.4A6 6 0 1 1 10.3 18"/><path d="M7 6h1v4"/>',
+ heart:'<path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7Z"/>',
+ alert:'<path d="m21.7 18-8-14a2 2 0 0 0-3.4 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.7-3Z"/><path d="M12 9v4M12 17h.01"/>',
+ cal:'<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>',
+ sprout:'<path d="M7 20h10"/><path d="M10 20c5.5-2.5.8-6.4 3-10"/><path d="M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8z"/><path d="M14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4 1-4.9 2z"/>'};
+const ic=n=>ICP[n]?`<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICP[n]}</svg>`:'';
+const NAVI={edital:'file',dash:'chart',equipe:'users',arq:'archive',prof:'cap'};
+const TABI={cadastro:'card',checklist:'checks',part:'pie',projeto:'pen',m2:'slides',doc:'send',sim:'scan',msgs:'msg',cfg:'sliders',equipes:'users',aval:'star',res:'trophy',leg:'book',fim:'flag',dados:'db'};
+function kpiIcon(l){l=l.toLowerCase();return ic(/equipes|integrantes/.test(l)?'users':/inscri/.test(l)?'check':/roteiro/.test(l)?'pen':/checklist/.test(l)?'checks':/solicitado/.test(l)?'coins':/contrapartida/.test(l)?'heart':/fora das regras/.test(l)?'alert':/prazo/.test(l)?'cal':/versões finais/.test(l)?'flag':'star')}
+/* planta que cresce com o projeto: 0 semente, 1 broto, 2 muda, 3 árvore, 4 árvore florida */
+function plantStage(t){const p=progress(t);return t.homol||t.final||t.envio||p>=95?4:p>=65?3:p>=35?2:p>=10?1:0}
+const STAGE_TXT=['Semente','Broto','Muda','Árvore','Florescendo'];
+function plantG(st){const g='<ellipse cx="60" cy="107" rx="44" ry="8" fill="#e9dcae"/><ellipse cx="60" cy="105" rx="32" ry="5" fill="#d8c287"/>';
+  if(st===0)return g+'<ellipse cx="60" cy="100" rx="8" ry="5.5" fill="#a77b3c"/><path d="M61 96c1-5 4-7 8-8" stroke="#4aab74" stroke-width="3" fill="none" stroke-linecap="round"/>';
+  if(st===1)return g+'<path d="M60 104V80" stroke="#2f7d52" stroke-width="4" stroke-linecap="round"/><path d="M60 86c-12 0-18-8-18-16 10 0 18 6 18 16z" fill="#5fbf86"/><path d="M60 82c12 0 18-8 19-18-11 0-19 6-19 18z" fill="#3e9b67"/>';
+  if(st===2)return g+'<path d="M60 104V54" stroke="#2f7d52" stroke-width="4.5" stroke-linecap="round"/><path d="M60 92c-14 0-21-9-21-18 12 0 21 7 21 18z" fill="#5fbf86"/><path d="M60 84c14 0 21-9 22-19-13 0-22 7-22 19z" fill="#3e9b67"/><path d="M60 70c-11 0-17-7-17-15 10 0 17 6 17 15z" fill="#3e9b67"/><path d="M60 62c10 0 15-7 16-14-9 0-16 5-16 14z" fill="#5fbf86"/><circle cx="60" cy="52" r="5" fill="#7fd09f"/>';
+  const tree='<path d="M55 105c2-12 2-24 3-38h4c1 14 1 26 3 38z" fill="#8a5a2b"/><path d="M60 80l-9-9M61 76l8-8" stroke="#8a5a2b" stroke-width="3" stroke-linecap="round"/><circle cx="41" cy="60" r="19" fill="#5fbf86"/><circle cx="79" cy="60" r="19" fill="#4aab74"/><circle cx="60" cy="48" r="25" fill="#3e9b67"/><circle cx="52" cy="38" r="9" fill="#5fbf86" opacity=".75"/>';
+  if(st===3)return g+tree;
+  return'<circle cx="96" cy="20" r="13" fill="#f7e6a6"/><circle cx="96" cy="20" r="8" fill="#f2cf5b"/>'+g+tree+'<circle cx="44" cy="52" r="4.5" fill="#f2cf5b"/><circle cx="70" cy="40" r="4.5" fill="#a993e6"/><circle cx="80" cy="62" r="4.5" fill="#f2cf5b"/><circle cx="55" cy="66" r="4" fill="#a993e6"/><circle cx="63" cy="30" r="4" fill="#f2cf5b"/><circle cx="34" cy="64" r="3.5" fill="#a993e6"/>'}
+const plantSVG=(st,size=96,anim=false)=>`<svg width="${size}" height="${size}" viewBox="0 0 120 120" role="img" aria-label="Estágio do projeto: ${STAGE_TXT[st]}"><g class="${anim?'grow':''}">${plantG(st)}</g></svg>`;
+function motivOf(t){const st=plantStage(t);
+  if(t.homol)return'Inscrição confirmada. O projeto floresceu: agora é preparar uma defesa à altura.';
+  if(t.envio)return'Envio confirmado. Enquanto o professor confere, revisem a apresentação.';
+  return['Toda transformação começa com uma semente. Comecem pelo problema que querem resolver.','O broto apareceu. Agora deem forma ao objetivo e às metas.','As raízes estão firmes. Sigam com metodologia, cronograma e orçamento.','O projeto já faz sombra. Revisem os detalhes e preparem o Modelo 2.','Quase tudo pronto. Conferam as pendências e confirmem o envio.'][st]}
+const heroArt=()=>`<svg viewBox="0 0 560 380" role="img" aria-label="Ilustração: projetos crescendo à beira do rio, ligados por uma rede de solidariedade">
+  <defs><linearGradient id="hsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#dde9fd"/><stop offset="1" stop-color="#efe8fd"/></linearGradient><clipPath id="hclip"><rect width="560" height="380" rx="28"/></clipPath></defs>
+  <g clip-path="url(#hclip)"><rect width="560" height="380" fill="url(#hsky)"/>
+  <circle cx="440" cy="92" r="58" fill="#f7e6a6"/><circle cx="440" cy="92" r="38" fill="#f2cf5b"/>
+  <path d="M0 210c70-40 140-48 210-26s130 12 190-14 120-18 160 4v206H0z" fill="#cfecd8"/>
+  <path d="M0 246c80-24 150-20 230 0s160 16 230-8 80-10 100-4v146H0z" fill="#a9dcb9"/>
+  <path d="M0 318c90-26 180-30 280-12s190 10 280-14v88H0z" fill="#b9d3f7"/>
+  <path d="M30 336c30-6 60-6 90 0M210 326c34-6 66-6 100 0M380 338c30-6 60-6 90 0" stroke="#fff" stroke-opacity=".8" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <path d="M300 344c18 8 52 8 70 0l-6 10c-16 5-42 5-58 0z" fill="#876200"/><path d="M336 343v-16" stroke="#876200" stroke-width="3" stroke-linecap="round"/>
+  <path d="M95 196Q170 120 230 150M262 150Q320 112 380 132M402 132Q450 120 486 168" stroke="#7b63cc" stroke-width="3" stroke-dasharray="3 9" stroke-linecap="round" fill="none"/>
+  <path d="M244 132c-4-6 4-11 7-5 3-6 11-1 7 5l-7 7z" fill="#a993e6"/><path d="M392 116c-4-6 4-11 7-5 3-6 11-1 7 5l-7 7z" fill="#a993e6"/>
+  <g transform="translate(40 168) scale(.95)">${plantG(1)}</g><g transform="translate(160 118) scale(1.25)">${plantG(2)}</g><g transform="translate(300 98) scale(1.3)">${plantG(3)}</g><g transform="translate(424 142) scale(1.05)">${plantG(4).replace(/<circle cx="96" cy="20" r="13"[^>]*\/><circle cx="96" cy="20" r="8"[^>]*\/>/,'')}</g>
+  </g></svg>`;
 /* ============ edital (público) ============ */
 function vEdital(){const c=cfg(),now=new Date(),ts=Object.values(teams()).map(norm),r=pub().resultado;
   const ms=[[c.dtParcial,'23:59','Apresentação parcial ao professor'],[c.dtInscricao,c.hrInscricao,`Inscrição até ${c.hrInscricao}`],[c.dtDefesa,c.hrDefesaFim,`Defesa pública, ${c.hrDefesaIni} às ${c.hrDefesaFim}`],[c.dtFinal,'23:59','Versão final após feedback'],[c.dtResultado,'23:59','Resultado final']]
@@ -574,8 +799,8 @@ function vEdital(){const c=cfg(),now=new Date(),ts=Object.values(teams()).map(no
   let nx=ms.findIndex(m=>D(m[0],m[1])>=now);
   const ruler=ms.map((m,i)=>{const dd=Math.ceil((D(m[0],m[1])-now)/864e5);return`<div class="m ${i<nx||nx<0?'done':i===nx?'next':''}"><div class="d">${fdate(m[0],{day:'2-digit',month:'short'})}</div><div class="l">${esc(m[2])}${i===nx?`<br>${dd<=1?'termina em menos de um dia':'faltam '+dd+' dias'}`:''}</div></div>`}).join('');
   const ag=agenda(c);
-  return`<section class="hero"><span class="ed-line">${esc(c.edicao)}, edição ${esc(c.ano)}</span><h2>Chamada ${esc(c.patrocinadora)} para projetos sociais em Manaus e adjacências</h2>
-  <p class="lead">Cada equipe atua como uma startup de consultoria: escolhe uma empresa ou ONG da região e elabora, inscreve e defende um projeto social de um ano, com início em ${D(c.inicioProjeto+'-01').toLocaleDateString('pt-BR',{month:'long',year:'numeric'})}.</p></section>
+  return`<section class="hero hero-ed"><div class="hero-tx"><span class="ed-line">${esc(c.edicao)}, edição ${esc(c.ano)}</span><h2>Chamada ${esc(c.patrocinadora)} para projetos sociais em Manaus e adjacências</h2>
+  <p class="lead">Cada equipe atua como uma startup de consultoria: escolhe uma empresa ou ONG da região e elabora, inscreve e defende um projeto social de um ano, com início em ${D(c.inicioProjeto+'-01').toLocaleDateString('pt-BR',{month:'long',year:'numeric'})}.</p><div class="hero-cta"><button class="btn" data-act="view" data-v="equipe">${ic('users')} Entrar na área da equipe</button><button class="btn ghost" data-act="view" data-v="dash">${ic('chart')} Ver o dashboard</button></div></div><div class="hero-art">${heroArt()}</div></section>
   <div class="ruler">${ruler}</div>
   ${c.aviso?`<div class="note"><strong>Aviso do professor.</strong> ${esc(c.aviso)}</div>`:''}
   ${r?vResultadoPub(r):''}
@@ -605,25 +830,39 @@ function vResultadoPub(r){return`<div class="panel"><h3>Resultado final, publica
 
 /* ============ área da equipe ============ */
 function vEquipe(){const t=cur();if(!t)return vEquipeLista();norm(t);const c=cfg(),ph=phase(c),[st,cl]=statusTeam(t);
-  const tabs=[['cadastro','Cadastro'],['checklist','Checklist'],['projeto','Projeto (Modelo 1)'],['m2','Apresentação (Modelo 2)'],['doc','Revisar e inscrever'],['msgs','Mensagens']];const me=S.isProf?'prof':'team',nu=unread(t.id,me);if(S.tab==='msgs')markSeen(t.id,me);
+  const tabs=[['cadastro','Cadastro'],['checklist','Checklist'],['part','Participação'],['projeto','Projeto (Modelo 1)'],['m2','Apresentação (Modelo 2)'],['doc','Revisar e inscrever'],['sim','Similaridade'],['msgs','Mensagens']];const me=S.isProf?'prof':'team',nu=unread(t.id,me);if(S.tab==='msgs')markSeen(t.id,me);
   const lock=!canEditProj();
   const msg={elab:`Inscrições abertas até ${c.hrInscricao} de ${fdate(c.dtInscricao)}.`,analise:'Prazo de inscrição encerrado. Os projetos estão com os avaliadores até a defesa.',revisao:`Período de revisão: ajuste o projeto com o feedback e entregue a versão final até ${fdate(c.dtFinal)}.`,fim:'Chamada encerrada.'}[ph];
   const fb=pub().feedback?.by?.[t.id];
-  return`<div class="row spread" style="margin-bottom:14px"><div><h2>${esc(t.info.startup||'Equipe sem nome')}</h2><div class="muted">Consultoria para ${esc(t.info.org||'organização a definir')} <span class="tag ${cl}">${st}</span>${isLocalTeam(t.id)&&S.hosted?' <span class="tag warn">Salva só neste navegador</span>':''}</div></div>
-   <div class="row"><div style="min-width:170px"><div class="small muted"><span id="prog-n">${progress(t)}</span>% do roteiro preenchido</div><div class="bar"><i id="prog" style="width:${progress(t)}%"></i></div></div><button class="btn ghost sm" data-act="leave">Trocar de equipe</button></div></div>
+  const pst=plantStage(t),anim=(S.lastStage||={})[t.id]!==pst;S.lastStage[t.id]=pst;
+  return`<div class="row spread teamhero" style="margin-bottom:14px"><div class="th-l">${plantSVG(pst,104,anim)}<div><h2>${esc(t.info.startup||'Equipe sem nome')}</h2><div class="muted">Consultoria para ${esc(t.info.org||'organização a definir')} <span class="tag ${cl}">${st}</span>${isLocalTeam(t.id)&&S.hosted?' <span class="tag warn">Salva só neste navegador</span>':''}</div><p class="motiv">${esc(motivOf(t))}</p></div></div>
+   <div class="row"><div style="min-width:170px"><div class="small muted"><span id="prog-n">${progress(t)}</span>% do roteiro preenchido</div><div class="bar"><i id="prog" style="width:${progress(t)}%"></i></div><div style="margin-top:6px">${simBadge(t)}</div></div><button class="btn ghost sm" data-act="leave">Trocar de equipe</button></div></div>
+  ${S.isProf&&S.asProf?'':`<div class="whoami">${(LS.who||{})[t.id]?`Você está como <b>${esc(((t.info.membros||[]).find(m=>mkey(m.nome)===LS.who[t.id])||{}).nome||'integrante')}</b>.`:'<span class="pt-warn">Você ainda não se identificou: suas edições contam como "não identificado".</span>'} <button class="btn ghost sm" data-act="who">${(LS.who||{})[t.id]?'Não sou eu':'Escolher meu nome'}</button></div>`}
   <div class="note ${lock?'':'info'}">${msg}${lock?(aguarda(t)&&!S.isProf?' O envio foi confirmado e o projeto está bloqueado até o professor confirmar a inscrição; o checklist e as mensagens continuam abertos.':' A edição do projeto está bloqueada; o checklist continua aberto.'):''}</div>
   ${fb?`<div class="note ok"><strong>Feedback dos avaliadores.</strong> <span style="white-space:pre-wrap">${esc(fb)}</span></div>`:''}
   ${S.isProf?'':'<div class="note violet"><strong>Edição em equipe.</strong> Qualquer integrante com o código pode editar, e tudo é salvo automaticamente. Combinem um responsável por seção no checklist: se duas pessoas editarem a mesma seção ao mesmo tempo, vale o que for salvo por último.</div>'}
   ${S.isProf&&S.asProf?`<div class="note violet"><span class="live">Acompanhamento ao vivo</span> ${S.profEdit?'<strong>Edição habilitada:</strong> o que você alterar é gravado no projeto da equipe.':'Você está vendo esta equipe em modo leitura. O checklist e o projeto se atualizam sozinhos sempre que a equipe salva.'} <button class="btn ${S.profEdit?'':'gold'} sm" data-act="prof-edit">${S.profEdit?'Voltar ao modo leitura':'Habilitar edição'}</button> <button class="btn ghost sm" data-act="view" data-v="prof">Voltar ao painel</button></div>`:''}
-  ${nu&&S.tab!=='msgs'?`<div class="note"><strong>${S.isProf?'A equipe respondeu.':'Nova mensagem do professor.'}</strong> <button class="btn gold sm" data-act="tab" data-v="msgs">Ler mensagens</button></div>`:''}
-  <div class="tabs">${tabs.map(([k,l])=>`<button data-act="tab" data-v="${k}" aria-pressed="${S.tab===k}">${l}${k==='msgs'&&nu&&S.tab!=='msgs'?`<span class="badge">${nu}</span>`:''}</button>`).join('')}</div>
-  ${{cadastro:tCadastro,checklist:tChecklist,projeto:tProjeto,m2:tM2,doc:tDoc,msgs:tMsgs}[S.tab](t)}`}
+  ${nu&&S.tab!=='msgs'?`<div class="note"><strong>${(()=>{const sv=LS.seen[(S.isProf?'p:':'')+t.id]||0,u=msgList(t.id).filter(m=>m.from!==me&&m.at>sv);return u.length&&u.every(m=>m.from==='sys')?'Alerta automático de similaridade com projeto de edição anterior.':S.isProf?'A equipe respondeu.':'Nova mensagem do professor.'})()}</strong> <button class="btn gold sm" data-act="tab" data-v="msgs">Ler mensagens</button></div>`:''}
+  <div class="tabs">${tabs.map(([k,l])=>`<button data-act="tab" data-v="${k}" aria-pressed="${S.tab===k}">${ic(TABI[k])}${l}${k==='msgs'&&nu&&S.tab!=='msgs'?`<span class="badge">${nu}</span>`:''}</button>`).join('')}</div>
+  ${{cadastro:tCadastro,checklist:tChecklist,projeto:tProjeto,m2:tM2,doc:tDoc,msgs:tMsgs,part:tPart,sim:tSim}[S.tab](t)}`}
+function tPart(t){const P=partData(t),HB=(name,w,cl,val)=>`<div class="hb"><div class="n" title="${esc(name)}">${esc(name)}</div><div class="t"><i class="${cl}" style="width:${Math.max(0,Math.min(100,w))}%"></i></div><div class="v">${val}</div></div>`;
+  const tag=([c,l])=>`<span class="tag ${c==='ok'?'ok':c==='warn'?'warn':'bad'}">${l}</span>`;
+  return`<div class="panel"><h3>Participação dos integrantes</h3>
+  <div class="note info">A plataforma registra quem edita cada seção, a partir do nome que cada integrante escolhe ao entrar, e compara com os responsáveis definidos no checklist. ${P.since?`Registros desde ${fdt(P.since)}; edições anteriores a essa data não foram registradas.`:'Ainda não há edições registradas nesta equipe.'} Para o retrato ficar fiel, cada integrante deve entrar com o próprio nome e editar as seções pelas quais é responsável.</div>
+  ${P.alerts.length?P.alerts.map(([c,l])=>`<div class="note ${c==='bad'?'bad':''}">${l}</div>`).join(''):(P.tot?'<div class="note ok">A participação está distribuída entre os integrantes e coerente com o checklist.</div>':'')}
+  <h4 style="margin:16px 0 6px">Parcela das edições registradas</h4>${P.tot?P.mem.map(m=>HB(m.nome,m.share*100,m.share>=0.6&&P.ms.length>1?'c-r':'c-v',Math.round(m.share*100)+'%')).join('')+(P.anon?HB('Não identificado',P.anon/P.tot*100,'c-n',Math.round(P.anon/P.tot*100)+'%'):''):'<p class="muted small">Nenhuma edição registrada ainda.</p>'}
+  <h4 style="margin:18px 0 6px">Por integrante</h4><div class="scroll"><table><thead><tr><th>Integrante</th><th class="num">Ações no checklist</th><th class="num">Concluídas</th><th class="num">Ações em que editou</th><th class="num">Edições</th><th class="num">Palavras escritas</th><th>Última atividade</th><th>Situação</th></tr></thead><tbody>
+  ${P.mem.map(m=>`<tr><td><strong>${esc(m.nome)}</strong></td><td class="num">${m.resp}</td><td class="num">${m.conc}</td><td class="num">${m.doneBy} de ${m.resp}</td><td class="num">${m.n}</td><td class="num">${m.w}</td><td class="small">${m.last?fdt(m.last):'nunca'}</td><td>${tag(m.status)}</td></tr>`).join('')}</tbody></table></div>
+  <h4 style="margin:18px 0 6px">Checklist: responsável x quem editou</h4><div class="scroll"><table><thead><tr><th>Ação</th><th>Responsável no checklist</th><th>Situação</th><th>Quem editou de fato</th><th>Observação</th></tr></thead><tbody>
+  ${P.acts.map(a=>`<tr><td>${esc(a.l)}</td><td class="small">${a.resp.length?a.resp.map(m=>esc(m.nome)).join(', '):esc(t.chk?.[a.k]?.r||'')||'<span class="muted">não definido</span>'}</td><td class="small">${esc(STS[a.st]||'A definir')}</td>
+   <td class="small">${a.eds.length?a.eds.map(e=>`${esc(e.nome)} (${Math.round(e.n/a.sum*100)}%)`).join(', '):'<span class="muted">nenhuma edição registrada</span>'}</td><td>${a.fl.map(tag).join(' ')}</td></tr>`).join('')}</tbody></table></div>
+  <p class="small muted" style="margin-top:10px">"Edições" conta os salvamentos automáticos feitos por cada integrante (um a cada pausa na digitação); "palavras escritas" soma as palavras acrescentadas nas seções de texto. A identificação é declarada por quem usa a plataforma: ela não substitui a conversa da equipe nem a observação do professor.</p></div>`}
 function tMsgs(t){const l=msgList(t.id),c=cfg();return`<div class="panel"><h3>Mensagens entre o professor e a equipe</h3><p class="muted small">${S.isProf?'Só esta equipe vê o que você escrever aqui.':'Use este espaço para recados e dúvidas com '+esc(c.professor)+'.'}</p>
-  <div class="thread">${l.length?l.map(m=>`<div class="msg ${m.from==='prof'?'prof':'team'}"><div class="who">${m.from==='prof'?esc(c.professor):'Equipe '+esc(t.info.startup)}, ${fdt(m.at)}</div><p>${esc(m.txt)}</p></div>`).join(''):'<p class="muted">Nenhuma mensagem ainda.</p>'}</div>
+  <div class="thread">${l.length?l.map(m=>`<div class="msg ${m.from==='prof'?'prof':m.from==='sys'?'sys':'team'}"><div class="who">${m.from==='prof'?esc(c.professor):m.from==='sys'?'Monitor de similaridade (mensagem automática)':'Equipe '+esc(t.info.startup)}, ${fdt(m.at)}</div><p>${esc(m.txt)}</p></div>`).join(''):'<p class="muted">Nenhuma mensagem ainda.</p>'}</div>
   <label class="f">${S.isProf?'Mensagem para a equipe':'Mensagem para o professor'}<textarea id="msg-txt" style="min-height:90px"></textarea></label><button class="btn" data-act="msg-send">Enviar mensagem</button></div>`}
 function vEquipeLista(){const c=cfg(),all=Object.values(teams()).map(norm),mine=all.filter(t=>isMine(t)||isLocalTeam(t.id)),n=S.newTeam||=newTeamObj();
-  const card=t=>`<button class="card" data-act="enter" data-id="${t.id}"><h4>${esc(t.info.startup)}</h4><div class="small muted">${esc(t.info.org)}, ${t.info.membros.filter(m=>m.nome).length} integrantes, ${progress(t)}% preenchido</div></button>`;
-  return`<h2 style="margin-bottom:6px">Área da equipe</h2><p class="muted" style="max-width:70ch">Entre na sua equipe com o código definido no cadastro, ou cadastre uma nova. Todos os integrantes usam o mesmo código.</p>
+  const card=t=>`<button class="card cardp" data-act="enter" data-id="${t.id}">${plantSVG(plantStage(t),58)}<span><h4>${esc(t.info.startup)}</h4><span class="small muted" style="display:block">${esc(t.info.org)}, ${t.info.membros.filter(m=>m.nome).length} integrantes, ${progress(t)}% preenchido</span></span></button>`;
+  return`<div class="empty-art" style="margin-bottom:6px">${plantSVG(1,64)}<h2>Área da equipe</h2></div><p class="muted" style="max-width:70ch">Entre na sua equipe com o código definido no cadastro, ou cadastre uma nova. Todos os integrantes usam o mesmo código.</p>
   ${S.hosted&&S.ready&&!S.db?'<div class="note">Você não está conectado ao banco compartilhado. O que preencher fica salvo neste navegador; ao terminar, baixe o arquivo da equipe em "Revisar e inscrever" e envie ao professor.</div>':''}
   ${S.db&&S.readOnly?'<div class="note">Seu acesso a esta página é somente leitura. O que preencher fica salvo neste navegador; ao terminar, baixe o arquivo da equipe e envie ao professor.</div>':''}
   ${mine.length?`<h3 style="margin:18px 0 8px">Suas equipes neste navegador</h3><div class="grid g3">${mine.map(card).join('')}</div>`:''}
@@ -653,7 +892,7 @@ function tChecklist(t){const rows=chkRows(),done=rows.filter(r=>t.chk[r.k]?.s===
   <datalist id="dl-m">${t.info.membros.filter(m=>m.nome).map(m=>`<option value="${esc(m.nome)}">`).join('')}</datalist>
   <div class="scroll"><table class="ed"><thead><tr><th>Principais ações</th><th>Responsável(is)</th><th>Prazo</th><th>Situação</th><th></th></tr></thead><tbody>
   ${rows.map(r=>{const v=t.chk[r.k]||{};const f=r.fix?'':(filled(t,r.k)?'<span class="tag ok">preenchida</span>':'');return`<tr><td style="padding:10px 8px;font-weight:600">${esc(r.l)}</td><td data-l="Responsável(is)">${inp(`chk.${r.k}.r`,v.r,{list:'dl-m',al:'Responsável'})}</td>
-   <td data-l="Prazo">${r.fix?`<input type="date" value="${r.fix}" disabled aria-label="Prazo do edital">`:inp(`chk.${r.k}.d`,v.d,{type:'date',al:'Prazo'})}</td><td data-l="Situação">${sel(`chk.${r.k}.s`,v.s||'',Object.entries(STS).slice(1),{blank:true,al:'Situação'}).replace('Selecione',r.fix?'A realizar':'A definir')}</td><td>${f}</td></tr>`}).join('')}
+   <td data-l="Prazo">${r.fix?`<input type="text" value="${fmtBR(r.fix)}" disabled aria-label="Prazo do edital">`:inp(`chk.${r.k}.d`,v.d,{type:'date',al:'Prazo'})}</td><td data-l="Situação">${sel(`chk.${r.k}.s`,v.s||'',Object.entries(STS).slice(1),{blank:true,al:'Situação'}).replace('Selecione',r.fix?'A realizar':'A definir')}</td><td>${f}</td></tr>`}).join('')}
   </tbody></table></div></div>`}
 function tProjeto(t){const s=SECS.find(x=>x.k===S.sec)||SECS[0],i=SECS.indexOf(s),dis=DIS();let body='';
   const wc=s.max?`<div class="small muted wc ${words(t[s.k])>s.max?'over':''}" data-wc="${s.k}" data-max="${s.max}">${words(t[s.k])} de ${s.max} palavras recomendadas no máximo</div>`:'';
@@ -774,7 +1013,7 @@ function vDash(){const c=cfg(),ts=Object.values(teams()).map(norm).sort((a,b)=>S
   const ck=ts.map(t=>{const o={C:0,E:0,P:0,N:0};rows.forEach(r=>{const s=t.chk[r.k]?.s;o[s==='C'||s==='E'||s==='P'?s:'N']++});return o});
   const bf=sum(os.map(o=>o.bf)),contra=sum(os.map(o=>o.contra)),tot=sum(os.map(o=>o.tot)),fora=ts.filter((t,i)=>os[i].tot&&orcIssues(t,c).length).length;
   const ms=[[c.dtParcial,'23:59','apresentação parcial'],[c.dtInscricao,c.hrInscricao,'fim das inscrições'],[c.dtDefesa,c.hrDefesaIni,'defesa pública'],[c.dtFinal,'23:59','versão final'],[c.dtResultado,'23:59','resultado']].map(m=>[D(m[0],m[1]),m[2],m[0]]).filter(m=>m[0]>=now).sort((a,b)=>a[0]-b[0])[0];
-  const K=(cl,l,v,s='')=>`<div class="kpi ${cl}"><div class="l">${l}</div><div class="fig">${v}</div>${s?`<div class="s">${s}</div>`:''}</div>`,pc=x=>Math.round(x)+'%';
+  const K=(cl,l,v,s='')=>`<div class="kpi ${cl}"><span class="ki">${kpiIcon(l)}</span><div class="l">${l}</div><div class="fig">${v}</div>${s?`<div class="s">${s}</div>`:''}</div>`,pc=x=>Math.round(x)+'%';
   const HB=(name,segs,val,mk)=>`<div class="hb"><div class="n" title="${esc(name)}">${esc(name)}</div><div class="t">${segs.map(([w,cl])=>`<i class="${cl}" style="width:${Math.max(0,Math.min(100,w))}%"></i>`).join('')}${mk!=null?`<span class="mk" style="left:${Math.min(100,mk)}%"></span>`:''}</div><div class="v">${val}</div></div>`;
   if(!n)return`<h2 style="margin-bottom:6px">Dashboard</h2><div class="panel"><p class="muted">Os indicadores aparecem aqui assim que a primeira equipe se cadastrar.</p></div>`;
   const areas={};ts.forEach(t=>{const a=t.info.area||'Não informada';areas[a]=(areas[a]||0)+1});
@@ -784,6 +1023,9 @@ function vDash(){const c=cfg(),ts=Object.values(teams()).map(norm).sort((a,b)=>S
   <div class="kpis">${K('b','Equipes cadastradas',n,mem+' integrantes')}${K('g','Inscrições confirmadas',ins+' de '+n,agu?agu+' aguardando o professor':pc(ins/n*100)+' das equipes')}${K('v','Roteiro preenchido (média)',pc(avg(pr)),ts.filter((t,i)=>pr[i]===100).length+' equipe(s) com 100%')}${K('p','Checklist concluído (média)',pc(avg(ck.map(o=>o.C/rows.length*100))),sum(ck.map(o=>o.C))+' ações concluídas')}
    ${K('g','Total solicitado',brl(bf),pc(bf/(c.valorTotal||1)*100)+' do patrocínio de '+brl(c.valorTotal))}${K('v','Contrapartida e parceiros',brl(contra),bf?pc(contra/bf*100)+' do valor solicitado':'')}${K('p','Orçamentos fora das regras',fora,fora?'acima do teto ou sem contrapartida mínima':'todos dentro do edital')}${K('b',ms?'Próximo prazo':'Prazos',ms?Math.max(0,Math.ceil((ms[0]-now)/864e5))+' dias':'encerrados',ms?ms[1]+', '+fdate(ms[2]):'')}
    ${fin?K('v','Versões finais entregues',fin+' de '+n):''}</div>
+  <div class="panel forest"><h3>Floresta da turma</h3><p class="small muted">Cada árvore é um projeto. Ela cresce conforme o roteiro é preenchido e floresce quando o envio é confirmado.</p>
+   <div class="legend-t">${STAGE_TXT.map((x,i)=>`<span>${plantSVG(i,26)}${x}</span>`).join('')}</div>
+   <div class="trees">${ts.map((t,i)=>`<div class="tree">${plantSVG(plantStage(t),92)}<b title="${esc(t.info.startup)}">${esc(t.info.startup)}</b><span>${pr[i]}% do roteiro</span></div>`).join('')}</div></div>
   <div class="grid g2">
    <div class="panel"><h3>Progresso do roteiro por equipe</h3><p class="small muted">Percentual das 15 seções e do Modelo 2 já preenchidos.</p>${ts.map((t,i)=>HB(t.info.startup,[[pr[i],pr[i]===100?'c-v':'c-b']],pr[i]+'%'+(t.envio&&t.homol?', inscrito':''))).join('')}</div>
    <div class="panel"><h3>Checklist por equipe</h3><div class="legend"><span style="--c:#6cc592">Concluído</span><span style="--c:#e6c85a">Em execução</span><span style="--c:#7fa9ea">Planejado</span><span style="--c:#d5dcef">A definir</span></div>${ts.map((t,i)=>{const o=ck[i],L=rows.length;return HB(t.info.startup,[[o.C/L*100,'c-v'],[o.E/L*100,'c-g'],[o.P/L*100,'c-b']],o.C+'/'+L)}).join('')}</div>
@@ -796,9 +1038,9 @@ function vDash(){const c=cfg(),ts=Object.values(teams()).map(norm).sort((a,b)=>S
   ${pub().resultado?'<div class="note ok">O resultado final já foi publicado e está na página do Edital. <button class="btn sm" data-act="view" data-v="edital">Ver resultado</button></div>':'<p class="small muted">As notas da avaliação não aparecem aqui; o resultado é divulgado no Edital quando o professor publicar.</p>'}`}
 /* ============ área do professor ============ */
 function vProf(){const tabs=[['cfg','Configurar edital'],['equipes','Equipes'],['aval','Avaliação e defesas'],['res','Resultado'],['leg','Projetos anteriores'],['fim','Encerrar edição'],['dados','Dados']];
-  return`<h2 style="margin-bottom:12px">Área do professor</h2>
+  return`<h2 style="margin-bottom:12px;display:flex;gap:10px;align-items:center">${ic('cap')}Área do professor</h2>
   ${!S.db?'<div class="note">Sem banco de dados conectado: tudo fica salvo apenas neste navegador. Conecte um banco na aba Dados para que professor e equipes compartilhem as mesmas informações.</div>':''}
-  <div class="tabs">${tabs.map(([k,l])=>`<button data-act="ptab" data-v="${k}" aria-pressed="${S.ptab===k}">${l}</button>`).join('')}</div>${{cfg:pCfg,equipes:pEquipes,aval:pAval,res:pRes,dados:pDados,fim:pFim,leg:pLeg}[S.ptab]()}`}
+  <div class="tabs">${tabs.map(([k,l])=>`<button data-act="ptab" data-v="${k}" aria-pressed="${S.ptab===k}">${ic(TABI[k])}${l}</button>`).join('')}</div>${{cfg:pCfg,equipes:pEquipes,aval:pAval,res:pRes,dados:pDados,fim:pFim,leg:pLeg}[S.ptab]()}`}
 function pLeg(){const c=cfg(),L=S.leg||={ano:(+c.ano||2026)-1,titulo:'',startup:'',org:'',membros:''},f=S.legFiles,I=(l,p,o={})=>`<label class="f">${l}${o.h?`<span class="h">${o.h}</span>`:''}${inp(p,L[p],{scope:'leg',type:o.type,attr:o.attr})}</label>`;
   if(!S.db)return'<div class="panel"><h3>Projetos de edições anteriores</h3><div class="note">Para guardar os arquivos em PDF e Excel é preciso estar com o banco de dados conectado (aba Dados).</div></div>';
   return`<div class="panel"><h3>Cadastrar projeto de uma edição anterior</h3><p class="muted">Use para disponibilizar aos alunos os projetos defendidos antes de ${esc(c.ano)}. Eles aparecem em "Edições anteriores", agrupados por ano, e o texto do PDF entra na comparação de semelhança.</p>
@@ -834,7 +1076,7 @@ function pEquipes(){const c=cfg(),ts=Object.values(teams()).map(norm).sort((a,b)
    return`<tr><td><strong>${esc(t.info.startup)}</strong><br><span class="small muted">${esc(t.info.org)} (${esc(t.info.area)})</span><br><span class="small">${esc(t.p1)}</span></td><td class="small">${t.info.membros.filter(m=>m.nome).map(m=>esc(m.nome)).join('<br>')}</td>
    <td><div class="bar"><i style="width:${progress(t)}%"></i></div><span class="small muted">${progress(t)}%</span></td><td class="small">${dn}/${rows.length}</td><td class="num">${brl(o.bf)}</td><td class="num"><span class="tag ${bad?'bad':o.tot?'ok':''}">${o.pct.toFixed(1)}%</span></td>
    <td><span class="tag ${cl}">${st}</span>${t.envio?`<br><span class="small muted">${fdt(t.envio.at)}</span>`:''}<br><span class="small">Código: <strong>${codes()[t.id]?.c?esc(codes()[t.id].c):'não registrado'}</strong></span> <button class="btn ghost sm" data-act="code-reset" data-id="${t.id}">Redefinir código</button>${aguarda(t)?`<br><button class="btn gold sm" data-act="homol" data-id="${t.id}">Confirmar inscrição</button>`:''}${isLocalTeam(t.id)&&S.db?'<br><span class="tag warn">local</span>':''}</td><td class="small muted">${fdt(t.updatedAt)}</td>
-   <td style="min-width:250px;text-align:left"><button class="btn sm" data-act="open" data-id="${t.id}" data-tab="checklist">Checklist</button> <button class="btn sm" data-act="open" data-id="${t.id}" data-tab="projeto">Projeto</button> <button class="btn gold sm" data-act="open" data-id="${t.id}" data-tab="msgs">Mensagens${unread(t.id,'prof')?`<span class="badge">${unread(t.id,'prof')}</span>`:''}</button>${(()=>{const sm=simAll(t);return sm.length?`<div class="small" style="white-space:normal;margin-top:6px"><span class="tag warn">Texto parecido</span> ${sm.map(x=>`${esc(x.l)} ${Math.round(x.r.s*100)}% com ${esc(x.r.name)}${x.r.y?' (edição de '+esc(x.r.y)+')':''}`).join('; ')}</div>`:''})()}<br><button class="btn ghost sm" data-act="go-eval" data-id="${t.id}">Avaliar</button> <button class="x" data-act="del-team" data-id="${t.id}" aria-label="Excluir equipe">×</button></td></tr>`}).join('')}
+   <td style="min-width:250px;text-align:left"><button class="btn sm" data-act="open" data-id="${t.id}" data-tab="checklist">Checklist</button> <button class="btn sm" data-act="open" data-id="${t.id}" data-tab="projeto">Projeto</button> <button class="btn gold sm" data-act="open" data-id="${t.id}" data-tab="msgs">Mensagens${unread(t.id,'prof')?`<span class="badge">${unread(t.id,'prof')}</span>`:''}</button>${(()=>{const al=Object.entries(t.alertas||{}).filter(([,v])=>v&&v.p>=PREV_MIN*100);return al.length?`<div class="small" style="white-space:normal;margin-top:6px"><span class="tag bad">Alerta: edição anterior</span> ${al.sort((a,b)=>b[1].p-a[1].p).map(([k,v])=>`${k==='g'?'Projeto todo':esc((SIMK.find(x=>x[0]===k)||[,k])[1])} ${v.p}% com ${esc(v.n||'projeto')} (${esc(v.y)})`).join('; ')}</div>`:''})()}${(()=>{const sm=simAll(t);return sm.length?`<div class="small" style="white-space:normal;margin-top:6px"><span class="tag warn">Texto parecido</span> ${sm.map(x=>`${esc(x.l)} ${Math.round(x.r.s*100)}% com ${esc(x.r.name)}${x.r.y?' (edição de '+esc(x.r.y)+')':''}`).join('; ')}</div>`:''})()}<div style="margin-top:6px">${simBadge(t,false)} <button class="btn ghost sm" data-act="open" data-id="${t.id}" data-tab="sim">Ver similaridade</button></div>${(()=>{const P=partData(t),act=P.mem.filter(m=>m.n).length,bad=P.alerts.some(a=>a[0]==='bad');return`<div class="small" style="white-space:normal;margin-top:6px"><span class="tag ${!P.tot?'':bad?'bad':'ok'}">Participação</span> ${P.tot?`${act} de ${P.ms.length} com edição registrada${(()=>{const tp=P.mem.slice().sort((a,b)=>b.n-a.n)[0];return tp&&tp.n?`; maior parcela: ${esc(tp.nome)} (${Math.round(tp.share*100)}%)`:''})()}`:'sem registros ainda'} <button class="btn ghost sm" data-act="open" data-id="${t.id}" data-tab="part">Ver participação</button></div>`})()}<br><button class="btn ghost sm" data-act="go-eval" data-id="${t.id}">Avaliar</button> <button class="x" data-act="del-team" data-id="${t.id}" aria-label="Excluir equipe">×</button></td></tr>`}).join('')}
   </tbody></table></div>`:'<p class="muted">Nenhuma equipe cadastrada. Compartilhe a página com a turma para começarem.</p>'}</div>`}
 function pAval(){const c=cfg(),ts=Object.values(teams()).map(norm).sort((a,b)=>a.createdAt-b.createdAt),ag=agenda(c);
   if(!ts.length)return'<div class="panel"><p class="muted">Ainda não há equipes para avaliar.</p></div>';
@@ -889,7 +1131,8 @@ function onField(e){const el=e.target;
   if(el.dataset.actSel==='eval'){S.evalId=el.value;render();return}
   const p=el.dataset.path;if(!p)return;const sc=el.dataset.scope||'team';
   let v=el.type==='checkbox'?el.checked:el.type==='number'?(el.value===''?'':+el.value):el.value;
-  if(sc==='team'){const t=cur();if(!t)return;if(profRO())return;const top=p.split('.')[0];if(!S.isProf&&!canEditProj()&&!['chk','info'].includes(top))return;if(/^orc\.\d+\.sub$/.test(p)){const it=getP(t,p.replace(/\.sub$/,''));if(it)delete it.lin}setP(t,p,v);markDirty(t.id,top);refresh();if(/^orc\.\d+\.sub$/.test(p))render()}
+  if(el.dataset.fmt){if(e.inputType!==undefined&&!/^delete/.test(e.inputType||''))maskFmt(el);const raw=el.value.trim();if(!raw)v='';else{const iso=FMT[el.dataset.fmt].from(raw);el.classList.toggle('bad-in',raw.length>=FMT[el.dataset.fmt].len&&!iso);if(!iso)return;v=iso}el.classList.remove('bad-in')}
+  if(sc==='team'){const t=cur();if(!t)return;if(profRO())return;const top=p.split('.')[0];if(!S.isProf&&!canEditProj()&&!['chk','info'].includes(top))return;if(!(S.isProf&&S.asProf))noteBase(t,top);if(/^orc\.\d+\.sub$/.test(p)){const it=getP(t,p.replace(/\.sub$/,''));if(it)delete it.lin}setP(t,p,v);markDirty(t.id,top);refresh();if(/^orc\.\d+\.sub$/.test(p))render()}
   else if(sc==='new'){setP(S.newTeam,p,v)}
   else if(sc==='leg'){setP(S.leg||={},p,v)}
   else if(sc==='cfg'){if(el.dataset.lines)v=v.split('\n').map(s=>s.trim()).filter(Boolean);if(p==='inscricoesAbertas'||p==='travar')v=v==='1';setP(S.draft,p,v)}
@@ -976,10 +1219,11 @@ document.addEventListener('click',async e=>{const b=e.target.closest('[data-act]
   case'code-reset':{if(!S.isProf)break;const x=T(d.id);if(!x)break;const sug=Math.random().toString(36).slice(2,8);
     const v=await ask({title:'Redefinir o código de '+x.info.startup,body:'Digite o novo código (mínimo de 4 caracteres) ou use o sugerido. O código anterior deixa de funcionar, e os integrantes precisarão digitar o novo para entrar.',input:sug,ok:'Redefinir código'});if(v==null)break;const nv=v.trim();if(nv.length<4){toast('Código muito curto.');break}
     x.code=hash(x.id+nv);markDirty(x.id,'code');await flush();await saveCode(x.id,nv);toast('Novo código de '+x.info.startup+': '+nv);render();break}
+  case'who':if(t)await askWho(t);break;
   case'ptab':S.ptab=d.v;if(d.v==='cfg')S.draft=null;render();break;
   case'leave':S.profEdit=false;S.asProf=false;await flush();S.teamId=null;render();break;
   case'enter':{S.asProf=false;const x=T(d.id);if(!x)break;if(!S.isProf&&!isMine(x)&&x.code){const v=await ask({title:'Entrar em '+x.info.startup,body:'Digite o código de acesso da equipe.',input:'',ok:'Entrar',type:'password'});if(v==null)break;if(hash(x.id+v)!==x.code){toast('Código incorreto.');break}addMine(x)}
-    S.teamId=x.id;S.tab='cadastro';render();break}
+    S.teamId=x.id;S.tab='cadastro';monitorSoon(x.id,1500);render();if(!(LS.who||{})[x.id]&&!S.isProf)await askWho(x);break}
   case'open':S.profEdit=false;S.asProf=true;S.teamId=d.id;S.view='equipe';S.tab=d.tab||'projeto';render();window.scrollTo(0,0);break;
   case'go-eval':S.evalId=d.id;S.ptab='aval';render();break;
   case'new-addm':S.newTeam.info.membros.push({nome:'',email:''});render();break;
@@ -990,7 +1234,7 @@ document.addEventListener('click',async e=>{const b=e.target.closest('[data-act]
     if((n.code||'').length<4){toast('O código de acesso precisa de pelo menos 4 caracteres.');break}
     if(Object.values(teams()).some(x=>x.info?.startup?.toLowerCase()===n.info.startup.toLowerCase())){toast('Já existe uma equipe com esse nome de startup.');break}
     const plain=n.code;n.code=hash(n.id+n.code);n.p3={nome:n.info.org};b.disabled=true;const where=await createTeam(n);addMine(n);saveCode(n.id,plain);S.newTeam=null;S.teamId=n.id;S.tab='checklist';
-    toast(where==='shared'?'Equipe cadastrada.':'Equipe cadastrada neste navegador.');render();window.scrollTo(0,0);break}
+    toast(where==='shared'?'Equipe cadastrada.':'Equipe cadastrada neste navegador.');render();window.scrollTo(0,0);await askWho(n);break}
   case'chcode':{const v=await ask({title:'Novo código de acesso',body:'Mínimo de 4 caracteres. Avise os demais integrantes.',input:'',ok:'Trocar código'});if(v==null)break;if(v.length<4){toast('Código muito curto.');break}t.code=hash(t.id+v);markDirty(t.id,'code');addMine(t);saveCode(t.id,v);toast('Código alterado.');break}
   case'addrow':{const arr=getP(t,d.key);if(d.key==='info.membros'&&c.maxMembros&&arr.length>=c.maxMembros&&!S.isProf){toast(`O limite é de ${c.maxMembros} integrantes.`);break}
     {const sc=SECS.find(x=>x.k===d.key);arr.push(d.key.startsWith('p8')?{a:'',m:'000000000000'}:d.key==='info.membros'?{nome:'',email:''}:Object.fromEntries((sc?.cols||[]).map(x=>[x.f,''])))}markDirty(t.id,d.key.split('.')[0]);render();break}
