@@ -514,6 +514,7 @@ const AUTHERR={'auth/invalid-email':'E-mail inválido. Confira o que foi digitad
   'auth/network-request-failed':'Sem conexão com a internet. Confira a conexão e tente de novo.','auth/account-exists-with-different-credential':'Este e-mail já tem conta com outra forma de entrada. Entre com e-mail e senha.'};
 const authMsg=e=>AUTHERR[e?.code]||('Não foi possível concluir ('+(e?.code||e?.message||'erro desconhecido')+').');
 const isMember=t=>!!(S.auth&&authOk()&&t&&t.acl&&t.acl[ekey(myEmail())]);
+const sameAcl=(a,b)=>{const x=Object.keys(a||{}).sort(),y=Object.keys(b||{}).sort();return x.length===y.length&&x.every((k,i)=>k===y[i])};
 function aclOf(t,own){const a={};(t.info?.membros||[]).forEach(m=>{if(isEmail(m?.email))a[ekey(m.email)]=true});if(own&&!S.isProf&&myEmail())a[ekey(myEmail())]=true;return a}
 const memKey=m=>S.auth?ekey(m.email):mkey(m.nome);
 function dbUrl(){let u=DB_URL;const m=location.hash.match(/db=([^&]+)/);if(!u&&m)u=decodeURIComponent(m[1]);if(!u){try{u=localStorage.getItem('mostra_ps_db')||''}catch(e){}}
@@ -1060,7 +1061,7 @@ function accTable(t){const R=S.roster||{},ms=(t.info.membros||[]).filter(m=>(m.n
 function pTurma(){const R=S.roster||{},ts=Object.values(teams()).map(norm).sort((a,b)=>String(a.info.startup).localeCompare(String(b.info.startup)));
   const lines=Object.values(R).filter(x=>x&&x.email).sort((a,b)=>String(a.nome||a.email).localeCompare(String(b.nome||b.email))).map(x=>(x.nome?x.nome+'; ':'')+x.email).join('\n');
   const all=ts.flatMap(t=>(t.info.membros||[]).map((m,i)=>({t,m,i})).filter(x=>(x.m.nome||'').trim())),semE=all.filter(x=>!isEmail(x.m.email)).length,fora=all.filter(x=>isEmail(x.m.email)&&!R[ekey(x.m.email)]).length;
-  const desat=ts.filter(t=>JSON.stringify(aclOf(t,false))!==JSON.stringify(t.acl||{})).length;
+  const desat=ts.filter(t=>!sameAcl(aclOf(t,false),t.acl)).length;
   return`${S.auth?'':'<div class="note">O login seguro ainda não está ativo. A lista da turma passa a valer quando a página com login seguro for publicada (veja a aba Dados).</div>'}
   <div class="panel"><h3>Lista da turma</h3><p>Só os e-mails desta lista conseguem entrar e ver as equipes. Um aluno por linha, no formato <code>Nome; e-mail</code> ou só o e-mail.</p>
    <textarea id="roster-txt" style="min-height:220px;text-align:left" placeholder="Ana Souza; ana.souza@gmail.com&#10;Bruno Lima; bruno@hotmail.com">${esc(S.rosterDraft??lines)}</textarea>
@@ -1588,7 +1589,7 @@ document.addEventListener('click',async e=>{const b=e.target.closest('[data-act]
   case'roster-import':{if(!S.isProf)break;const cur0=(S.rosterDraft??$('#roster-txt')?.value??'').trim(),have=new Set((cur0.match(/[^\s<>;,()]+@[^\s<>;,()]+\.[^\s<>;,()]+/g)||[]).map(x=>x.toLowerCase())),add=[];
     Object.values(teams()).forEach(t=>(t.info?.membros||[]).forEach(m=>{const em=String(m.email||'').trim().toLowerCase();if(isEmail(em)&&!have.has(em)){have.add(em);add.push(((m.nome||'').trim()?m.nome.trim()+'; ':'')+em)}}));
     S.rosterDraft=(cur0?cur0+'\n':'')+add.join('\n');toast(add.length?add.length+' e-mail(s) incluídos no texto. Revise e clique em Salvar lista da turma.':'Todos os e-mails das equipes já estão na lista.');render();break}
-  case'acl-sync':{if(!S.isProf)break;let n=0;b.disabled=true;for(const t of Object.values(S.shared||{})){const a=aclOf(t,false);if(JSON.stringify(a)===JSON.stringify(t.acl||{}))continue;try{await S.db.doc('teams/'+t.id).update({acl:a});t.acl=a;n++}catch(er){}}
+  case'acl-sync':{if(!S.isProf)break;let n=0;b.disabled=true;for(const t of Object.values(S.shared||{})){const a=aclOf(t,false);if(sameAcl(a,t.acl))continue;try{await S.db.doc('teams/'+t.id).update({acl:a});t.acl=a;n++}catch(er){}}
     toast(n?`Acessos atualizados em ${n} equipe(s).`:'Os acessos já estavam atualizados.');render();break}
   case'ptab':S.ptab=d.v;if(d.v==='cfg')S.draft=null;render();break;
   case'leave':S.profEdit=false;S.asProf=false;await flush();S.teamId=null;render();break;
