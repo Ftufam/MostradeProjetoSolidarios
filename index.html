@@ -298,6 +298,13 @@ input[type=text],input[type=email],input[type=url],input[type=number],input[type
 .lhelp>summary::after{content:"+";margin-left:auto;font-weight:800;color:var(--violet-d);font-size:1.2rem}.lhelp[open]>summary::after{content:"−"}
 .lhelp ol{margin-top:12px}.lhelp li{margin-bottom:8px}
 .loginbox{max-width:560px}.loginbox .gbtn{display:inline-flex;align-items:center;gap:10px;background:#fff;color:var(--ink);border:1px solid var(--line);font-weight:700;padding:10px 16px}
+.lead-full{max-width:none;width:100%;text-align:justify}
+.login2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;align-items:stretch;margin:14px 0 6px}.login2 .panel{margin:0}
+.lopt .lhead{display:flex;gap:12px;align-items:flex-start;margin-bottom:10px}.lopt .lhead h3{margin:0 0 2px}.lopt .lhead p{margin:0;text-align:left;hyphens:manual}
+.lnum{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-weight:800;color:#fff;background:#2a56b8}
+.lopt .gbtn{display:inline-flex;align-items:center;gap:10px;background:#fff;color:var(--ink);border:1px solid var(--line);font-weight:700;padding:10px 16px}.lopt .gbtn:hover{background:#f6f8fe;color:var(--ink)}
+.lsteps{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px}.lsteps>div{border:1px solid var(--line);border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:4px}.lsteps .btn{margin-top:6px;width:100%}
+@media(max-width:420px){.lsteps{grid-template-columns:1fr}}
 .or{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:.86rem;margin:16px 0 8px}.or::before,.or::after{content:"";flex:1;height:1px;background:var(--line)}
 .okc{color:var(--green-d);font-weight:700}.noc{color:var(--danger);font-weight:700}
 
@@ -378,7 +385,7 @@ nav.main .wrap{position:relative}
 #nav{justify-content:flex-start}
 #nav>button:first-child{margin-left:auto}#nav>button:last-child{margin-right:auto}
 nav.main button{text-transform:uppercase;letter-spacing:.07em;font-size:.84rem;font-weight:700}
-@media(min-width:1040px){nav.main .status{position:absolute;right:20px;top:50%;transform:translateY(-50%)}}
+
 .h2art svg{box-shadow:0 22px 46px -26px #000}
 @media (prefers-reduced-motion:reduce){.grow{animation:none}.card:hover{transform:none}}
 </style>
@@ -541,7 +548,7 @@ function fbAdapter(root,opt={}){
       es.addEventListener('cancel',()=>{try{es.close()}catch(e){}st.denied=true;st.ready=true;fire()});
       es.onerror=()=>{S.fbOk=false;renderStatus()};es.onopen=()=>{S.fbOk=true;renderStatus()}};
     st.open(false);if(AUTH()&&AU.user)st.iv=setInterval(()=>st.open(true),45*60000);return st}
-  const watch=(p,emit)=>{const parts=p.split('/'),name=opt.fine?area(p)+'/'+parts[0]:area(p),ks=opt.fine?parts.slice(1):parts,st=stream(name);let last;
+  const watch=(p,emit)=>{const parts=p.split('/'),dep=opt.fine?(['teams','msgs','ativ2','mt'].includes(parts[0])&&parts.length>1?2:1):0,name=dep?area(p)+'/'+parts.slice(0,dep).join('/'):area(p),ks=parts.slice(dep),st=stream(name);let last;
     const f=()=>{let v=st.cache;for(const k of ks){v=v&&typeof v==='object'?v[k]:undefined}if(v===undefined)v=null;const j=JSON.stringify(v);if(j===last)return;last=j;emit(v===null?null:JSON.parse(j))};
     st.subs.push(f);if(st.ready)f();return()=>{const i=st.subs.indexOf(f);if(i>=0)st.subs.splice(i,1)}};
   return{doc:p=>({get:async()=>{const v=await req('GET',p);return{exists:v!=null,data:()=>v}},set:d=>req('PUT',p,d),update:d=>req('PATCH',p,d),delete:()=>req('DELETE',p),onSnapshot:n=>watch(p,c=>n({exists:c!=null,data:()=>c}))}),
@@ -693,10 +700,20 @@ const simTxt=(t,k)=>k==='p5'?String(t.p5?.geral||''):String(t[k]||'');
 const toks=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().match(/[a-z0-9]{2,}/g)||[];
 function shing(s){const w=toks(s),o=new Set();if(w.length<3){if(w.length)o.add(w.join(' '));return o}for(let i=0;i<=w.length-3;i++)o.add(w[i]+' '+w[i+1]+' '+w[i+2]);return o}
 const shCache=new Map();
+const fh=x=>{let h=2166136261;for(let i=0;i<x.length;i++){h^=x.charCodeAt(i);h=Math.imul(h,16777619)}return(h>>>0).toString(36)};
+const hshing=s=>new Set([...shing(s)].map(fh));
+function shH(key,txt){let e=shCache.get(key);if(!e||e.t!==txt){e={t:txt,s:hshing(txt),n:toks(txt).length};shCache.set(key,e)}return e}
+function shF(key,str,n){let e=shCache.get(key);if(!e||e.t!==str){e={t:str,s:new Set(String(str||'').split(' ').filter(Boolean)),n:+n||0};shCache.set(key,e)}return e}
+/* projetos desta edição para comparação: texto completo (professor) ou impressões digitais (aluno) */
+function curPeers(t){const out=[],ts=teams();
+  for(const o of Object.values(ts)){if(!o||!o.info||o.id===t.id)continue;const sec={};let all=new Set(),n=0;SIMK.forEach(([k])=>{const e=shH('cur/'+o.id+'/'+k,simTxt(o,k));sec[k]=e;if(k!=='p1'){e.s.forEach(x=>all.add(x));n+=e.n}});out.push({id:o.id,name:o.info.startup||'',sec,all,n})}
+  if(S.auth&&!S.isProf)for(const[id,f]of Object.entries(S.fp||{})){if(!f||ts[id]||id===t.id)continue;const sec={};let all=new Set(),n=0;SIMK.forEach(([k])=>{const e=shF('fp/'+id+'/'+k,f.h?.[k],f.n?.[k]);sec[k]=e;if(k!=='p1'){e.s.forEach(x=>all.add(x));n+=e.n}});out.push({id,name:'',sec,all,n})}
+  return out}
+function fpOf(t){const h={},n={};SIMK.forEach(([k])=>{const e=shH('cur/'+t.id+'/'+k,simTxt(t,k));if(e.s.size){h[k]=[...e.s].join(' ');n[k]=e.n}});return{h,n}}
 function shOf(key,txt){let e=shCache.get(key);if(!e||e.t!==txt){e={t:txt,s:shing(txt),n:toks(txt).length};shCache.set(key,e)}return e}
-function simFor(t,k){const a=simTxt(t,k),min=k==='p1'?2:12;if(toks(a).length<min)return null;const A=shing(a);let best=null;
-  const test=(B,den,name,y)=>{if(!den)return;let n=0;A.forEach(x=>{if(B.has(x))n++});const s=n/den;if(s>=SIM_MIN&&(!best||s>best.s))best={s,name,y}};
-  for(const o of Object.values(teams())){if(!o||o.id===t.id)continue;const b=simTxt(o,k);if(toks(b).length<min)continue;const B=shing(b);test(B,Math.min(A.size,B.size),o.info?.startup||'',null)}
+function simFor(t,k){const a=simTxt(t,k),min=k==='p1'?2:12;if(toks(a).length<min)return null;const A=shing(a),AH=hshing(a);let best=null;
+  const test=(B,den,name,y,X=A)=>{if(!den)return;let n=0;X.forEach(x=>{if(B.has(x))n++});const s=n/den;if(s>=SIM_MIN&&(!best||s>best.s))best={s,name,y}};
+  for(const o of curPeers(t)){const e=o.sec[k];if(!e||e.n<min)continue;test(e.s,Math.min(AH.size,e.s.size),o.name,null,AH)}
   for(const[aid,doc]of Object.entries(arqTxt()))for(const[tid,e]of Object.entries(doc||{})){if(!e||typeof e!=='object')continue;
     if(typeof e[k]==='string'){const c=shOf(aid+'/'+tid+'/'+k,e[k]);if(c.n>=min)test(c.s,Math.min(A.size,c.s.size),e.n||'',e.y||'anterior')}
     else if(typeof e.all==='string'&&k!=='p1'){const c=shOf(aid+'/'+tid+'/all',e.all);test(c.s,A.size,e.n||'',e.y||'anterior')}}
@@ -715,12 +732,12 @@ function prevCheck(t){const docs=prevDocs();if(!docs.length)return null;const se
   if(toks(txt).length>=40){const A=shing(txt);docs.forEach(d=>{const c=shOf(d.key+'/all*',d.all);if(!c.s.size)return;let n=0;A.forEach(x=>{if(c.s.has(x))n++});const v=n/A.size;if(!g||v>g.s)g={s:v,y:d.y,name:d.name,l:'Projeto como um todo'}})}
   return{sec,g}}
 /* ---- indicador de similaridade (edições anteriores e equipes desta edição) ---- */
-function curCheck(t){const others=Object.values(teams()).filter(o=>o&&o.id!==t.id&&o.info),sec={};
-  SIMK.forEach(([k,l])=>{if(k==='p1')return;const a=simTxt(t,k);if(toks(a).length<12)return;const A=shing(a);if(!A.size)return;let best=null;
-    others.forEach(o=>{const b=simTxt(o,k);if(toks(b).length<12)return;const c=shOf('cur/'+o.id+'/'+k,b);let n=0;A.forEach(x=>{if(c.s.has(x))n++});const v=n/Math.min(A.size,c.s.size);if(!best||v>best.s)best={s:v,name:o.info.startup||''}});
+function curCheck(t){const others=curPeers(t),sec={};
+  SIMK.forEach(([k,l])=>{if(k==='p1')return;const a=simTxt(t,k);if(toks(a).length<12)return;const A=hshing(a);if(!A.size)return;let best=null;
+    others.forEach(o=>{const c=o.sec[k];if(!c||c.n<12||!c.s.size)return;let n=0;A.forEach(x=>{if(c.s.has(x))n++});const v=n/Math.min(A.size,c.s.size);if(!best||v>best.s)best={s:v,name:o.name}});
     if(best)sec[k]={...best,l}});
-  const txt=SIMK.filter(([k])=>k!=='p1').map(([k])=>simTxt(t,k)).join('\n');let g=null;
-  if(toks(txt).length>=40){const A=shing(txt);others.forEach(o=>{const b=SIMK.filter(([k])=>k!=='p1').map(([k])=>simTxt(o,k)).join('\n');if(toks(b).length<12)return;const c=shOf('cur/'+o.id+'/all',b);let n=0;A.forEach(x=>{if(c.s.has(x))n++});const v=n/A.size;if(!g||v>g.s)g={s:v,name:o.info.startup||''}})}
+  const own={};SIMK.forEach(([k])=>{if(k!=='p1')hshing(simTxt(t,k)).forEach(x=>own[x]=1)});const A=new Set(Object.keys(own));let g=null;
+  if(toks(SIMK.filter(([k])=>k!=='p1').map(([k])=>simTxt(t,k)).join(' ')).length>=40&&A.size){others.forEach(o=>{if(o.n<12||!o.all.size)return;let n=0;A.forEach(x=>{if(o.all.has(x))n++});const v=n/A.size;if(!g||v>g.s)g={s:v,name:o.name}})}
   return{sec,g}}
 const SIM_LV=[[0.2,'Baixa',0],[0.4,'Moderada',1],[0.5,'Atenção',2],[2,'Alta',3]];
 const simLevel=v=>v==null?['Texto insuficiente','x']:(SIM_LV.find(x=>v<x[0])||SIM_LV[3]).slice(1);
@@ -756,7 +773,7 @@ async function monitor(id){const t=T(id);if(!t||!t.info)return;norm(t);const r=p
   const lin=hits.map(h=>`- ${h.l}: cerca de ${h.p}% do conteúdo coincide com um projeto da edição de ${h.y}.`).join('\n');
   await sendMsg(id,'sys',`Alerta automático de similaridade.\n\nO projeto de vocês está muito parecido com projeto(s) de edições anteriores da Mostra:\n${lin}\n\nRecomendamos revisar essas partes e reescrevê-las com as palavras, os dados e a realidade da organização de vocês. Consultar projetos anteriores como referência é permitido, mas o texto precisa ser próprio da equipe. O professor também recebe este aviso.`)}
 const simAll=t=>SIMK.map(([k,l])=>({k,l,r:simFor(t,k)})).filter(x=>x.r);
-const sameOrg=t=>{const n=toks(t.info?.org||'').join(' ');return n?Object.values(teams()).filter(o=>o&&o.id!==t.id&&toks(o.info?.org||'').join(' ')===n):[]};
+const sameOrg=t=>{const n=toks(t.info?.org||'').join(' ');return n?Object.values(peers()).filter(o=>o&&o.id!==t.id&&toks(o.info?.org||'').join(' ')===n):[]};
 function simNote(t,k){const r=SIMK.some(x=>x[0]===k)?simFor(t,k):null;if(!r)return'';
   return`<div class="note" style="margin:12px 0 0"><strong>Revisem este texto.</strong> Ele está parecido com o de ${r.y?`um projeto da edição de ${esc(r.y)}`:'outro projeto desta edição'} da Mostra: cerca de ${Math.round(r.s*100)}% dos trechos coincidem${S.isProf?` (${esc(r.name)})`:''}. Reescrevam com as palavras, os dados e a realidade da organização de vocês.</div>`}
 /* ---- arquivo de edições ---- */
@@ -771,20 +788,43 @@ async function closeMostra(){const c=cfg(),ts=teams();let id=String(c.ano||new D
   if(S.db){await S.db.doc('arquivo/'+id).set(data);await S.db.doc('arquivo_prof/'+id).set({at:data.at,evals:clone(evals()),msgs:clone(msgs())});
     const chk=await S.db.doc('arquivo/'+id).get();if(!chk.exists)throw new Error('arquivo não gravado');
     await S.db.doc('arquivo_txt/'+id).set(tx);await S.db.doc('arquivo_idx/'+id).set(idx);
-    await Promise.all([...Object.keys(S.shared).map(k=>S.db.doc('teams/'+k).delete()),...Object.keys(S.evals).map(k=>S.db.doc('evals/'+k).delete()),...Object.keys(S.pub).map(k=>S.db.doc('public/'+k).delete()),...Object.keys(S.msgs).map(k=>S.db.doc('msgs/'+k).delete()),...Object.keys(S.codes||{}).map(k=>S.db.doc('codes/'+k).delete()),...Object.keys(S.ativ||{}).map(k=>S.db.doc('ativ2/'+k).delete()),...Object.keys(S.pcodes||{}).map(k=>S.db.doc('pcodes/'+k).delete())]);S.codes={};S.ativ={};S.pcodes={};
+    await Promise.all([...Object.keys(S.shared).map(k=>S.db.doc('teams/'+k).delete()),...Object.keys(S.evals).map(k=>S.db.doc('evals/'+k).delete()),...Object.keys(S.pub).map(k=>S.db.doc('public/'+k).delete()),...Object.keys(S.msgs).map(k=>S.db.doc('msgs/'+k).delete()),...Object.keys(S.codes||{}).map(k=>S.db.doc('codes/'+k).delete()),...Object.keys(S.ativ||{}).map(k=>S.db.doc('ativ2/'+k).delete()),...Object.keys(S.pcodes||{}).map(k=>S.db.doc('pcodes/'+k).delete()),...['mt','resumo','fp'].map(k=>S.db.doc(k).delete().catch(()=>{}))]);S.mt={};S.resumo={};S.fp={};S.codes={};S.ativ={};S.pcodes={};
     S.shared={};S.evals={};S.pub={};S.msgs={};S.arqIdx[id]=idx}
   else{LS.arq[id]=data;LS.arqIdx[id]=idx;LS.arqTxt[id]=tx;LS.evals={};LS.pub={};LS.msgs={}}
   LS.teams={};LS.my=[];saveLS();S.arq[id]=data;await saveCfg(next);return id}
+/* ---- dados derivados: resumo (dashboard), impressão digital (similaridade) e índice aluno->equipe ---- */
+const stab=v=>Array.isArray(v)?'['+v.map(stab).join(',')+']':v&&typeof v==='object'?'{'+Object.keys(v).sort().map(k=>JSON.stringify(k)+':'+stab(v[k])).join(',')+'}':JSON.stringify(v);
+function prune(v){if(Array.isArray(v)){const a=v.map(prune).filter(x=>x!==undefined);return a.length?a:undefined}if(v&&typeof v==='object'){const o={};for(const k in v){const x=prune(v[k]);if(x!==undefined)o[k]=x}return Object.keys(o).length?o:undefined}return v==null||v===''?undefined:v}
+function resumoOf(t){norm(t);const fill={};REQ.forEach(k=>{if(filled(t,k))fill[k]=1});const chk={};Object.entries(t.chk||{}).forEach(([k,v])=>{if(v&&v.s)chk[k]={s:v.s}});
+  return prune({_r:1,id:t.id,createdAt:t.createdAt||0,info:{startup:t.info.startup||'',org:t.info.org||'',area:t.info.area||'',membros:t.info.membros.filter(m=>(m.nome||'').trim()).map(()=>({nome:'-'}))},chk,
+    orc:(t.orc||[]).map(i=>({rub:i.rub||'',fonte:i.fonte||'bf',qtd:+i.qtd||0,unit:+i.unit||0})),envio:t.envio?1:0,homol:t.homol?1:0,final:t.final?1:0,fill,oi:orcIssues(t).length})}
+const DERIV={};
+async function putDerived(path,val,known){const j=val===undefined?'null':stab(val);if(DERIV[path]===j)return 0;if(DERIV[path]===undefined&&(known==null?'null':stab(known))===j){DERIV[path]=j;return 0}
+  try{if(val===undefined)await S.db.doc(path).delete();else await S.db.doc(path).set(val);DERIV[path]=j;return 1}catch(e){return 0}}
+async function syncDerived(id){if(!(S.auth&&S.db))return 0;const t=T(id);if(!t||!t.info||isLocalTeam(id))return 0;
+  return (await putDerived('resumo/'+id,resumoOf(t),(S.resumo||{})[id]))+(await putDerived('fp/'+id,prune(fpOf(t)),(S.fp||{})[id]))}
+let syncT;function syncAllSoon(ms=4000){if(!(S.isProf&&S.auth&&S.db))return;clearTimeout(syncT);syncT=setTimeout(()=>syncAll().catch(()=>{}),ms)}
+async function syncAll(){if(!(S.isProf&&S.auth&&S.db))return 0;const ts=S.shared||{},want={};let n=0;
+  for(const t of Object.values(ts)){Object.keys(t.acl||{}).forEach(k=>(want[k]??={})[t.id]=true);n+=await syncDerived(t.id)}
+  const have=S.mt||{};for(const k of new Set([...Object.keys(want),...Object.keys(have)])){const w=want[k]||{},h=have[k]&&typeof have[k]==='object'?have[k]:{};
+    for(const tid in w)if(!h[tid]){try{await S.db.doc('mt/'+k+'/'+tid).set(true);n++}catch(e){}}
+    for(const tid in h)if(!w[tid]){try{await S.db.doc('mt/'+k+'/'+tid).delete();n++}catch(e){}}}
+  for(const id of Object.keys(S.resumo||{}))if(!ts[id])n+=await putDerived('resumo/'+id,undefined);
+  for(const id of Object.keys(S.fp||{}))if(!ts[id])n+=await putDerived('fp/'+id,undefined);
+  return n}
+async function syncMt(id,prev,now){if(!(S.auth&&S.db))return;for(const k in now)if(!prev[k])await S.db.doc('mt/'+k+'/'+id).set(true).catch(()=>{});for(const k in prev)if(!now[k])await S.db.doc('mt/'+k+'/'+id).delete().catch(()=>{})}
+/* equipes visíveis para comparação e dashboard: o aluno só vê o resumo das outras */
+function peers(){if(!(S.auth&&!S.isProf))return teams();const o={};Object.entries(S.resumo||{}).forEach(([id,r])=>{if(r&&typeof r==='object'){const x=clone(r);x.id=id;x._r=1;o[id]=norm(x)}});return Object.assign(o,teams())}
 const q={};function queue(path,fn){q[path]=(q[path]||Promise.resolve()).then(fn);return q[path]}
 const dirty={};let saveT;
-function markDirty(id,key){(dirty[id]??=new Set()).add(key);if(S.auth&&key==='info'){const t1=T(id);if(t1){t1.acl=aclOf(t1,true);dirty[id].add('acl')}}{const t0=T(id);if(t0&&!['chk','envio','final','code','projAt','homol','alertas'].includes(key)){t0.projAt=Date.now();dirty[id].add('projAt')}}setSave('pend');clearTimeout(saveT);saveT=setTimeout(flush,1100)}
+function markDirty(id,key){(dirty[id]??=new Set()).add(key);if(S.auth&&key==='info'){const t1=T(id);if(t1){(S.aclPrev??={})[id]??=clone(t1.acl||{});t1.acl=aclOf(t1,true);dirty[id].add('acl')}}{const t0=T(id);if(t0&&!['chk','envio','final','code','projAt','homol','alertas'].includes(key)){t0.projAt=Date.now();dirty[id].add('projAt')}}setSave('pend');clearTimeout(saveT);saveT=setTimeout(flush,1100)}
 function setSave(s){S.save=s;renderStatus()}
 async function flush(){const flushed={},fl0=false;
   for(const id of Object.keys(dirty)){const keys=[...dirty[id]];if(!keys.length)continue;if(keys.some(k=>SIMK.some(x=>x[0]===k)))flushed[id]=1;const t=T(id);dirty[id]=new Set();if(!t)continue;
     t.updatedAt=Date.now();try{histRecord(id,keys)}catch(e){}
     if(isLocalTeam(id)||!S.db){saveLS();recordAtiv(id,keys);continue}
     const patch={updatedAt:t.updatedAt};keys.forEach(k=>patch[k]=clone(t[k]));
-    try{await queue('teams/'+id,()=>S.db.doc('teams/'+id).update(patch));recordAtiv(id,keys)}
+    try{await queue('teams/'+id,()=>S.db.doc('teams/'+id).update(patch));recordAtiv(id,keys);if(S.auth){if(patch.acl&&S.aclPrev?.[id]){const pv=S.aclPrev[id];delete S.aclPrev[id];syncMt(id,pv,t.acl||{})}syncDerived(id)}}
     catch(e){if(e&&e.code==='invalid_argument'){goLocal(id)}else{keys.forEach(k=>dirty[id].add(k));setSave('err');clearTimeout(saveT);saveT=setTimeout(flush,6000);return}}
   }
   setSave('ok');
@@ -792,9 +832,9 @@ async function flush(){const flushed={},fl0=false;
 }
 function goLocal(id){S.readOnly=true;const t=S.shared[id];if(t){LS.teams[id]=clone(t);saveLS()}toast('Sem permissão de escrita no banco compartilhado. Seu trabalho fica salvo neste navegador.');render()}
 async function createTeam(t){
-  if(S.db&&!S.readOnly){try{await queue('teams/'+t.id,()=>S.db.doc('teams/'+t.id).set(clone(t)));S.shared[t.id]=t;return 'shared'}catch(e){S.readOnly=true}}
+  if(S.db&&!S.readOnly){try{await queue('teams/'+t.id,()=>S.db.doc('teams/'+t.id).set(clone(t)));S.shared[t.id]=t;if(S.auth){await syncMt(t.id,{},t.acl||{});syncDerived(t.id)}return 'shared'}catch(e){S.readOnly=true}}
   LS.teams[t.id]=t;saveLS();return 'local'}
-async function deleteTeam(id){if(LS.teams[id]){delete LS.teams[id];saveLS()}if(S.db&&S.shared[id]){await S.db.doc('teams/'+id).delete();delete S.shared[id];S.db.doc('codes/'+id).delete().catch(()=>{});S.db.doc('ativ2/'+id).delete().catch(()=>{});S.db.doc('pcodes/'+id).delete().catch(()=>{});S.db.doc('hist/'+id).delete().catch(()=>{})}}
+async function deleteTeam(id){if(LS.teams[id]){delete LS.teams[id];saveLS()}if(S.db&&S.shared[id]){const ac=Object.keys(S.shared[id].acl||{});await S.db.doc('teams/'+id).delete();delete S.shared[id];if(S.auth){ac.forEach(k=>S.db.doc('mt/'+k+'/'+id).delete().catch(()=>{}));putDerived('resumo/'+id,undefined);putDerived('fp/'+id,undefined)}S.db.doc('codes/'+id).delete().catch(()=>{});S.db.doc('ativ2/'+id).delete().catch(()=>{});S.db.doc('pcodes/'+id).delete().catch(()=>{});S.db.doc('hist/'+id).delete().catch(()=>{})}}
 async function saveCfg(c){if(S.fb&&!c.profHash&&S.cfgDoc?.profHash)c.profHash=S.cfgDoc.profHash;if(S.db){await S.db.doc('config/edital').set(clone(c));S.cfgDoc=c}else{LS.cfg=c;saveLS()}}
 async function saveEval(id){const e=evals()[id];if(!e)return;e.updatedAt=Date.now();if(S.db)await queue('evals/'+id,()=>S.db.doc('evals/'+id).set(clone(e)));else saveLS()}
 async function savePub(name,data){if(S.db){if(data)await S.db.doc('public/'+name).set(clone(data));else await S.db.doc('public/'+name).delete();if(data)S.pub[name]=data;else delete S.pub[name]}else{if(data)LS.pub[name]=data;else delete LS.pub[name];saveLS()}}
@@ -808,7 +848,7 @@ async function boot(){
     try{await authInit()}catch(e){S.authErr=String(e&&e.message||e)}
     const em=myEmail();S.isProf=authOk()&&PROF_EMAILS.map(x=>x.toLowerCase()).includes(em);
     if(authOk()&&!S.isProf){try{const r=await fbAdapter(u).doc('roster/'+ekey(em)).get();S.member=!!r.exists;S.rosterNome=(r.data()||{}).nome||''}catch(e){S.member=false}}
-    S.full=!!(S.isProf||S.member);{let go=null;try{go=sessionStorage.getItem('ms_go');sessionStorage.removeItem('ms_go')}catch(e){}if(AU.user&&!S.full)S.view='equipe';else if(go&&AU.user)S.view=S.isProf?'prof':'equipe'}S.db=fbAdapter(u,{fine:!S.full});subscribe();if(S.isProf)subEvals();
+    S.full=!!(S.isProf||S.member);{let go=null;try{go=sessionStorage.getItem('ms_go');sessionStorage.removeItem('ms_go')}catch(e){}if(AU.user&&!S.full)S.view='equipe';else if(go&&AU.user)S.view=S.isProf?'prof':'equipe'}S.db=fbAdapter(u,{fine:!S.isProf});subscribe();if(S.isProf)subEvals();
     S.ready=true;render();return}
   if(!S.hosted){const u=dbUrl();
     if(u){S.fb=true;S.fbUrl=u;S.db=fbAdapter(u);try{S.isProf=sessionStorage.getItem('mostra_ps_prof')==='1'}catch(e){}subscribe();if(S.isProf)subEvals()}
@@ -823,7 +863,23 @@ async function boot(){
 }
 function subEvals(){if(S.evSub)return;S.evSub=true;S.db.collection('roster').onSnapshot(s=>{const m={};s.docs.forEach(d=>m[d.id]=clone(d.data()));S.roster=m;softRender()},dbErr);S.db.collection('pcodes').onSnapshot(s=>{const m={};s.docs.forEach(d=>m[d.id]=clone(d.data()));S.pcodes=m;softRender()},dbErr);S.db.collection('codes').onSnapshot(s=>{const m={};s.docs.forEach(d=>m[d.id]=clone(d.data()));S.codes=m;softRender()},dbErr);S.db.collection('evals').onSnapshot(s=>{const m={};s.docs.forEach(d=>m[d.id]=clone(d.data()));
         if(S.evalId&&S.evals[S.evalId]&&typing())m[S.evalId]=S.evals[S.evalId];S.evals=m;softRender()},dbErr)}
-function subscribe(){const db=S.db;if(S.auth&&!S.full){
+function pollDoc(p,cb,ms){let last;const run=async()=>{if(document.hidden&&last!==undefined)return;try{const s=await S.db.doc(p).get();const v=s.exists?clone(s.data()):null,j=JSON.stringify(v);if(j!==last){last=j;cb(v)}}catch(e){}};run();return setInterval(run,ms)}
+const objs=v=>{const m={};Object.entries(v||{}).forEach(([k,x])=>{if(x&&typeof x==='object')m[k]=x});return m};
+function subTeam(tid){const db=S.db;S.subT[tid]=[
+  db.doc('teams/'+tid).onSnapshot(s=>{if(!s.exists){delete S.shared[tid];softRender();return}const t=clone(s.data());t.id=tid;const old=S.shared[tid],dk=dirty[tid];if(old&&dk&&dk.size)dk.forEach(k=>t[k]=old[k]);S.shared[tid]=t;lkSync(t);if(S.teamId===tid)monitorSoon(tid,4000);softRender()}),
+  db.doc('msgs/'+tid).onSnapshot(s=>{if(s.exists)S.msgs[tid]=clone(s.data());else delete S.msgs[tid];softRender()}),
+  pollDoc('ativ2/'+tid,v=>{(S.ativ||={})[tid]=v||{};softRender()},60000)]}
+function subStudent(){const db=S.db;S.subT={};
+  /* aluno: lê só a própria equipe (ao vivo) e, das outras, apenas o resumo do dashboard e a impressão digital da similaridade */
+  pollDoc('config/edital',v=>{S.cfgDoc=v;softRender()},60000);
+  pollDoc('public',v=>{S.pub=objs(v);softRender()},60000);
+  pollDoc('arquivo_idx',v=>{S.arqIdx=objs(v);softRender()},600000);
+  pollDoc('legado',v=>{S.legado=objs(v);softRender()},600000);
+  pollDoc('arquivo_txt',v=>{S.arqTxt=v||{};shCache.clear();if(S.teamId)monitorSoon(S.teamId,4000);softRender()},600000);
+  pollDoc('resumo',v=>{S.resumo=objs(v);softRender()},60000);
+  pollDoc('fp',v=>{S.fp=objs(v);softRender()},300000);
+  pollDoc('mt/'+ekey(myEmail()),v=>{const m=v||{};for(const tid in m)if(!S.subT[tid])subTeam(tid);S.myT=m;S.mtReady=true;softRender()},30000)}
+function subscribe(){const db=S.db;if(S.auth&&S.full&&!S.isProf){subStudent();return}if(S.auth&&!S.full){
     db.doc('config/edital').onSnapshot(s=>{S.cfgDoc=s.exists?clone(s.data()):null;softRender()},dbErr);
     db.collection('public').onSnapshot(s=>{const m={};s.docs.forEach(d=>m[d.id]=clone(d.data()));S.pub=m;softRender()},dbErr);
     db.collection('arquivo_idx').onSnapshot(s=>{const m={};s.docs.forEach(d=>m[d.id]=clone(d.data()));S.arqIdx=m;softRender()},dbErr);
@@ -831,13 +887,14 @@ function subscribe(){const db=S.db;if(S.auth&&!S.full){
     db.doc('config/edital').onSnapshot(s=>{S.cfgDoc=s.exists?clone(s.data()):null;softRender()},dbErr);
     db.collection('teams').onSnapshot(s=>{const m={};s.docs.forEach(d=>{const t=clone(d.data());t.id=d.id;const old=S.shared[d.id],dk=dirty[d.id];
         if(old&&dk&&dk.size)dk.forEach(k=>t[k]=old[k]);m[d.id]=t});
-      S.shared=m;Object.values(m).forEach(x=>lkSync(x));if(S.isProf)monitorAllSoon();softRender()},dbErr);
+      S.shared=m;Object.values(m).forEach(x=>lkSync(x));if(S.isProf){monitorAllSoon();syncAllSoon()}softRender()},dbErr);
     db.collection('public').onSnapshot(s=>{const m={};s.docs.forEach(d=>m[d.id]=clone(d.data()));S.pub=m;softRender()},dbErr);
     db.collection('ativ2').onSnapshot(s=>{const m={};s.docs.forEach(d=>m[d.id]=clone(d.data()));S.ativ=m;softRender()},dbErr);
     db.collection('msgs').onSnapshot(s=>{const m={};s.docs.forEach(d=>m[d.id]=clone(d.data()));S.msgs=m;softRender()},dbErr);
     db.collection('arquivo_idx').onSnapshot(s=>{const m={};s.docs.forEach(d=>m[d.id]=clone(d.data()));S.arqIdx=m;softRender()},dbErr);
     db.collection('arquivo_txt').onSnapshot(s=>{const m={};s.docs.forEach(d=>m[d.id]=d.data());S.arqTxt=m;shCache.clear();if(S.isProf)monitorAllSoon();else if(S.teamId)monitorSoon(S.teamId,4000);softRender()},dbErr);
     db.collection('legado').onSnapshot(s=>{const m={};s.docs.forEach(d=>m[d.id]=clone(d.data()));S.legado=m;softRender()},dbErr);
+    if(S.auth&&S.isProf){db.doc('mt').onSnapshot(s=>{S.mt=s.exists?clone(s.data()):{};syncAllSoon()},dbErr);db.collection('resumo').onSnapshot(s=>{const m={};s.docs.forEach(d=>m[d.id]=clone(d.data()));S.resumo=m;syncAllSoon()},dbErr);db.collection('fp').onSnapshot(s=>{const m={};s.docs.forEach(d=>m[d.id]=clone(d.data()));S.fp=m;syncAllSoon()},dbErr)}
   }}
 function dbErr(e){if(e&&e.code==='revoked'){S.db=null;toast('A conexão com o banco compartilhado foi encerrada.');render()}}
 async function saveFile(name,text){
@@ -856,12 +913,12 @@ function norm(t){t.ilu||={};for(const k in t.ilu){t.ilu[k]=arr(t.ilu[k]);t.ilu[k
 function orcSum(t){const r={by:{},bf:0,cp:0,op:0,tot:0};RUBS.forEach(x=>r.by[x.id]={bf:0,cp:0,op:0,tot:0});
   (t.orc||[]).forEach(i=>{const v=(+i.qtd||0)*(+i.unit||0),f=FONTES[i.fonte]?i.fonte:'bf',b=r.by[i.rub];if(!b)return;b[f]+=v;b.tot+=v;r[f]+=v;r.tot+=v});
   r.contra=r.cp+r.op;r.pct=r.bf?r.contra/r.bf*100:0;return r}
-function orcIssues(t,c=cfg()){const o=orcSum(t),is=[];
+function orcIssues(t,c=cfg()){if(t._r)return Array(+t.oi||0).fill('');const o=orcSum(t),is=[];
   if(!o.tot)is.push('O orçamento ainda não tem itens.');
   if(o.bf>c.teto)is.push(`O valor solicitado (${brl(o.bf)}) passa do teto de ${brl(c.teto)} por proponente.`);
   if(o.bf&&o.pct<c.contrapartidaPct)is.push(`A contrapartida (${brl(o.contra)}, ${o.pct.toFixed(1)}%) está abaixo do mínimo de ${c.contrapartidaPct}% do valor solicitado (${brl(o.bf*c.contrapartidaPct/100)}).`);
   return is}
-function filled(t,k){const v=t[k];switch(k){
+function filled(t,k){if(t._r)return!!(t.fill&&t.fill[k]);const v=t[k];switch(k){
   case'p3':return INST.filter(([f])=>(v?.[f]||'').trim()).length>=6;
   case'p5':return !!(v?.geral||'').trim()&&(v.metas||[]).some(m=>(m||'').trim());
   case'p8':return ['m1','m2','m3'].some(m=>(v?.[m]||[]).some(r=>(r.a||'').trim()&&/1/.test(r.m||'')));
@@ -1031,28 +1088,33 @@ const heroArt=()=>{
 const GICON='<svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>';
 function loginHelp(open){return`<details class="panel lhelp" ${open?'open':''}><summary>${ic('book')}<h3 style="margin:0">Como entrar na plataforma</h3></summary><ol class="crit">
   <li><strong>Use o seu e-mail cadastrado.</strong> Entre com o mesmo e-mail que você informou ao professor e que está no cadastro da sua equipe. Cada aluno entra com a própria conta, e a plataforma registra o que cada um faz no projeto.</li>
-  <li><strong>E-mail do Google</strong> (Gmail ou conta Google institucional): clique em Entrar com Google e escolha a conta. Não é preciso criar senha.</li>
-  <li><strong>Outro e-mail</strong> (Hotmail, Outlook, Yahoo e outros): no primeiro acesso, digite o e-mail, escolha uma senha de pelo menos 6 caracteres e clique em Criar minha senha.</li>
+  <li><strong>Opção 1, e-mail Gmail ou conta Google</strong> (inclusive o institucional, se você o acessa pelo Gmail): clique em Entrar com Google e escolha a conta. Não é preciso criar senha.</li>
+  <li><strong>Opção 2, Hotmail, Outlook, Yahoo e outros</strong>: no primeiro acesso, digite o e-mail, escolha uma senha de pelo menos 6 caracteres e clique em Criar minha senha. Nos próximos acessos, digite o e-mail e a senha e clique em Entrar.</li>
   <li><strong>Confirme o e-mail.</strong> Chega uma mensagem com um link de confirmação; se não aparecer, procure no spam ou no lixo eletrônico. Clique no link, volte a esta página e clique em Já confirmei meu e-mail.</li>
   <li><strong>Nos próximos acessos,</strong> entre com o e-mail e a senha, ou com o Google. A sua equipe aparece automaticamente.</li>
   <li><strong>Esqueceu a senha?</strong> Digite o e-mail e clique em Esqueci minha senha. Um link para criar outra senha chega por e-mail.</li>
-  <li><strong>Equipe ainda não cadastrada?</strong> Depois de entrar, um integrante faz o cadastro informando o nome e o e-mail de cada colega. Só quem está no cadastro da equipe consegue editar o projeto.</li>
+  <li><strong>Equipe ainda não cadastrada?</strong> Depois de entrar, um integrante faz o cadastro informando o nome e o e-mail de cada colega. Só quem está no cadastro da equipe consegue ver e editar o projeto; cada aluno participa de uma única equipe e não vê o conteúdo das outras.</li>
   <li><strong>Não compartilhe a sua senha.</strong> Tudo o que for feito na sua conta fica registrado em seu nome.</li>
   <li><strong>Apareceu "e-mail fora da lista da turma"?</strong> Confira se entrou com o e-mail certo. Se estiver certo, peça ao professor para incluí-lo na lista.</li></ol></details>`}
 function vLogin(){const u=AU.user;let box;
   if(S.authErr)box=`<div class="note bad">Não foi possível carregar o login (${esc(S.authErr)}). Confira a conexão com a internet e recarregue a página.</div>`;
-  else if(!u)box=`<div class="panel loginbox"><h3 style="margin-bottom:12px">Entrar</h3>
-    <button class="btn gbtn" data-act="lg-google">${GICON} Entrar com Google</button>
-    <div class="or">ou com e-mail e senha</div>
-    <label class="f">E-mail<input type="email" id="lg-email" autocomplete="email" value="${esc(S.lgE||'')}" placeholder="seu.email@exemplo.com"></label>
-    <label class="f">Senha<span class="h">Mínimo de 6 caracteres.</span><input type="password" id="lg-pass" autocomplete="current-password"></label>
-    <div class="row"><button class="btn" data-act="lg-in">Entrar</button><button class="btn ghost" data-act="lg-new">Criar minha senha (primeiro acesso)</button></div>
-    <div class="row" style="margin-top:8px"><button class="lnk" data-act="lg-reset">Esqueci minha senha</button></div></div>`;
+  else if(!u)box=`<div class="login2">
+    <div class="panel lopt"><div class="lhead"><span class="lnum">1</span><div><h3>Seu e-mail é Gmail ou conta Google</h3><p class="small muted">Ex.: nome@gmail.com, ou o e-mail institucional se você o acessa pelo Gmail.</p></div></div>
+      <p>Não precisa criar senha. Clique no botão e escolha a sua conta Google.</p>
+      <button class="btn gbtn" data-act="lg-google">${GICON} Entrar com Google</button>
+      <p class="small muted" style="margin-top:14px">Se a janela do Google não abrir, permita pop-ups para este site no navegador e tente de novo.</p></div>
+    <div class="panel lopt"><div class="lhead"><span class="lnum">2</span><div><h3>Seu e-mail é Hotmail, Outlook, Yahoo ou outro</h3><p class="small muted">Ex.: nome@hotmail.com, nome@outlook.com, nome@yahoo.com.br.</p></div></div>
+      <label class="f">E-mail<input type="email" id="lg-email" autocomplete="email" value="${esc(S.lgE||'')}" placeholder="seu.email@hotmail.com"></label>
+      <label class="f">Senha<span class="h">Mínimo de 6 caracteres. No primeiro acesso, escolha a sua senha agora.</span><input type="password" id="lg-pass" autocomplete="current-password"></label>
+      <div class="lsteps"><div><b>Primeiro acesso</b><span class="small muted">Ainda não tenho senha</span><button class="btn gold" data-act="lg-new">Criar minha senha</button></div>
+      <div><b>Já tenho senha</b><span class="small muted">Já criei antes</span><button class="btn" data-act="lg-in">Entrar</button></div></div>
+      <div class="row" style="margin-top:8px"><button class="lnk" data-act="lg-reset">Esqueci minha senha</button></div></div></div>
+    <p class="small muted lead-full" style="margin:2px 0 14px">Use sempre a mesma opção e o mesmo e-mail que está no cadastro da sua equipe. Quem tem conta Google usa a opção 1; os demais, a opção 2.</p>`;
   else if(!u.emailVerified)box=`<div class="panel loginbox"><h3>Confirme o seu e-mail</h3><p>Enviamos um link de confirmação para <strong>${esc(u.email)}</strong>. Abra a mensagem (confira também o spam), clique no link e volte aqui.</p>
     <div class="row"><button class="btn" data-act="lg-verified">Já confirmei meu e-mail</button><button class="btn ghost" data-act="lg-resend">Reenviar o e-mail</button><button class="btn ghost sm" data-act="lg-out">Sair</button></div></div>`;
   else box=`<div class="panel loginbox"><h3>E-mail fora da lista da turma</h3><p>Você entrou como <strong>${esc(u.email)}</strong>, mas este e-mail não está na lista da turma cadastrada pelo professor.</p>
     <ul class="crit"><li>Se você tem outro e-mail cadastrado, clique em Sair e entre com ele.</li><li>Se o e-mail está certo, peça ao professor para incluí-lo na lista da turma.</li></ul><div class="row"><button class="btn ghost" data-act="lg-out">Sair</button></div></div>`;
-  return`<div class="empty-art" style="margin-bottom:6px">${plantSVG(1,64)}<h2>Área da equipe</h2></div><p class="muted" style="max-width:70ch">Cada aluno entra com o próprio e-mail. A plataforma registra o que cada integrante faz no projeto.</p>
+  return`<div class="empty-art" style="margin-bottom:6px">${plantSVG(1,64)}<h2>Área da equipe</h2></div><p class="muted lead-full">Cada aluno entra com o próprio e-mail. A plataforma registra o que cada integrante faz no projeto.</p>
   ${S.authMsg?`<div class="note bad">${esc(S.authMsg)}</div>`:''}${box}${loginHelp(!u)}`}
 function accTable(t){const R=S.roster||{},ms=(t.info.membros||[]).filter(m=>(m.nome||'').trim());
   return`<h4 style="margin:14px 0 6px">Acesso dos integrantes</h4><div class="scroll"><table><thead><tr><th>Integrante</th><th>E-mail no cadastro</th><th>Lista da turma</th><th>Acesso à equipe</th></tr></thead><tbody>
@@ -1083,12 +1145,15 @@ function rulesObj(){const em=PROF_EMAILS.map(e=>e.toLowerCase());
   const TURMA="("+SIG+" && root.child('mostra_ps_prof/roster/' + "+K+").exists())";
   const MEMB=tid=>"root.child('mostra_ps/teams/' + "+tid+" + '/acl/' + "+K+").exists()";
   return{rules:{".read":false,".write":false,
-    mostra_ps:{".read":PROF+" || "+TURMA,".write":PROF,
-      config:{".read":true},public:{".read":true},arquivo_idx:{".read":true},legado:{".read":true},
-      teams:{$tid:{".write":PROF+" || ("+TURMA+" && newData.exists() && (data.exists() ? data.child('acl/' + "+K+").exists() : newData.child('acl/' + "+K+").exists()))",
+    mostra_ps:{".read":PROF,".write":PROF,
+      config:{".read":true},public:{".read":true},arquivo_idx:{".read":true},legado:{".read":true},arquivo_txt:{".read":TURMA},
+      resumo:{".read":TURMA,$tid:{".write":PROF+" || ("+TURMA+" && "+MEMB('$tid')+")"}},
+      fp:{".read":TURMA,$tid:{".write":PROF+" || ("+TURMA+" && "+MEMB('$tid')+")"}},
+      mt:{$k:{".read":SIG+" && $k == "+K,$tid:{".write":PROF+" || ("+TURMA+" && "+MEMB('$tid')+")"}}},
+      teams:{$tid:{".read":TURMA+" && data.child('acl/' + "+K+").exists()",".write":PROF+" || ("+TURMA+" && newData.exists() && (data.exists() ? data.child('acl/' + "+K+").exists() : newData.child('acl/' + "+K+").exists()))",
         homol:{at:{".validate":PROF+" || newData.val() == data.val()"}}}},
-      msgs:{$tid:{$mid:{".write":PROF+" || ("+TURMA+" && !data.exists() && "+MEMB('$tid')+" && (newData.child('from').val() == 'team' || newData.child('from').val() == 'sys'))"}}},
-      ativ2:{$tid:{$k:{".write":PROF+" || ("+TURMA+" && $k == "+K+" && "+MEMB('$tid')+")"}}}},
+      msgs:{$tid:{".read":TURMA+" && "+MEMB('$tid'),$mid:{".write":PROF+" || ("+TURMA+" && !data.exists() && "+MEMB('$tid')+" && (newData.child('from').val() == 'team' || newData.child('from').val() == 'sys'))"}}},
+      ativ2:{$tid:{".read":TURMA+" && "+MEMB('$tid'),$k:{".write":PROF+" || ("+TURMA+" && $k == "+K+" && "+MEMB('$tid')+")"}}}},
     mostra_ps_prof:{".read":PROF,".write":PROF,roster:{$k:{".read":SIG+" && $k == "+K}}},
     mostra_ps_arq:{".read":PROF,".write":PROF,arquivo:{".read":true},
       arquivo_files:{$fid:{".read":true,".write":PROF+" || ("+TURMA+" && (data.exists() ? root.child('mostra_ps/teams/' + data.child('t').val() + '/acl/' + "+K+").exists() : root.child('mostra_ps/teams/' + newData.child('t').val() + '/acl/' + "+K+").exists()))"}},
@@ -1155,14 +1220,14 @@ function vResultadoPub(r){return`<div class="panel"><h3>Resultado final, publica
  ${(r.rank||[]).map((x,i)=>`<tr><td>${i+1}º</td><td><strong>${esc(x.startup)}</strong></td><td>${esc(x.org)}</td><td>${esc(x.titulo)}</td><td class="num">${(+x.nota).toFixed(2)}</td><td class="num">${brl(x.bf)}</td><td><span class="tag ${x.ok?'ok':''}">${x.ok?'Contemplado':'Não contemplado'}</span></td></tr>`).join('')}</tbody></table></div></div>`}
 
 /* ============ área da equipe ============ */
-function vEquipe(){const t=cur();if(!t||(S.auth&&!S.full))return vEquipeLista();norm(t);if(!LKP[t.id]){lkSync(t);LKP[t.id]=1}const c=cfg(),ph=phase(c),[st,cl]=statusTeam(t);
+function vEquipe(){let t=cur();if(t&&S.auth&&!S.isProf&&!isMember(t)){S.teamId=null;t=null}if(!t||(S.auth&&!S.full))return vEquipeLista();norm(t);if(!LKP[t.id]){lkSync(t);LKP[t.id]=1}const c=cfg(),ph=phase(c),[st,cl]=statusTeam(t);
   const tabs=[['cadastro','Cadastro'],['checklist','Checklist'],['part','Participação'],['projeto','Projeto (Modelo 1)'],['m2','Apresentação (Modelo 2)'],['doc','Revisar e inscrever'],['sim','Similaridade'],['msgs','Mensagens'],...(S.isProf?[['hist','Histórico']]:[])];const me=S.isProf?'prof':'team',nu=unread(t.id,me);if(S.tab==='msgs')markSeen(t.id,me);
   const lock=!canEditProj();
   const msg={elab:`Inscrições abertas até ${c.hrInscricao} de ${fdate(c.dtInscricao)}.`,analise:'Prazo de inscrição encerrado. Os projetos estão com os avaliadores até a defesa.',revisao:`Período de revisão: ajuste o projeto com o feedback e entregue a versão final até ${fdate(c.dtFinal)}.`,fim:'Chamada encerrada.'}[ph];
   const fb=pub().feedback?.by?.[t.id];
   const pst=plantStage(t),anim=(S.lastStage||={})[t.id]!==pst;S.lastStage[t.id]=pst;
   return`<div class="row spread teamhero" style="margin-bottom:14px"><div class="th-l">${plantSVG(pst,104,anim)}<div><h2>${esc(t.info.startup||'Equipe sem nome')}</h2><div class="muted">Consultoria para ${esc(t.info.org||'organização a definir')} <span class="tag ${cl}">${st}</span>${isLocalTeam(t.id)&&S.hosted?' <span class="tag warn">Salva só neste navegador</span>':''}</div><p class="motiv">${esc(motivOf(t))}</p></div></div>
-   <div class="row"><div style="min-width:170px"><div class="small muted"><span id="prog-n">${progress(t)}</span>% do roteiro preenchido</div><div class="bar"><i id="prog" style="width:${progress(t)}%"></i></div><div style="margin-top:6px">${simBadge(t)}</div></div><button class="btn ghost sm" data-act="leave">Trocar de equipe</button></div></div>
+   <div class="row"><div style="min-width:170px"><div class="small muted"><span id="prog-n">${progress(t)}</span>% do roteiro preenchido</div><div class="bar"><i id="prog" style="width:${progress(t)}%"></i></div><div style="margin-top:6px">${simBadge(t)}</div></div>${S.auth&&!S.isProf?'':'<button class="btn ghost sm" data-act="leave">Trocar de equipe</button>'}</div></div>
   ${S.isProf?'':S.auth?`<div class="whoami">${isMember(t)?`${ic('check')} Você entrou como <b>${esc(memName(t,ekey(myEmail())))}</b> (${esc(myEmail())}).`:`<span class="pt-warn">Você entrou como ${esc(myEmail())}, que não está no cadastro desta equipe: só pode visualizar.</span>`} <button class="btn ghost sm" data-act="lg-out">Sair</button></div>`:`<div class="whoami">${verifiedMk(t)?`${ic('check')} Você está identificado como <b>${esc(memName(t,verifiedMk(t)))}</b>. <button class="btn ghost sm" data-act="who">Trocar de pessoa</button> <button class="btn ghost sm" data-act="mypin">Alterar meu código pessoal</button>`:`<span class="pt-warn">Você está só visualizando. Para editar, identifique-se com o seu nome e o seu código pessoal.</span> <button class="btn gold sm" data-act="who">Identificar-me</button>`}</div>`}
   <div class="note ${lock?'':'info'}">${msg}${lock?(aguarda(t)&&!S.isProf?' O envio foi confirmado e o projeto está bloqueado até o professor confirmar a inscrição; o checklist e as mensagens continuam abertos.':' A edição do projeto está bloqueada; o checklist continua aberto.'):''}</div>
   ${fb?`<div class="note ok"><strong>Feedback dos avaliadores.</strong> <span style="white-space:pre-wrap">${esc(fb)}</span></div>`:''}
@@ -1187,16 +1252,17 @@ function tMsgs(t){const l=msgList(t.id),c=cfg();return`<div class="panel"><h3>Me
   <div class="thread">${l.length?l.map(m=>`<div class="msg ${m.from==='prof'?'prof':m.from==='sys'?'sys':'team'}"><div class="who">${m.from==='prof'?esc(c.professor):m.from==='sys'?'Monitor de similaridade (mensagem automática)':(m.by?esc(m.by)+', equipe ':'Equipe ')+esc(t.info.startup)}, ${fdt(m.at)}</div><p>${esc(m.txt)}</p></div>`).join(''):'<p class="muted">Nenhuma mensagem ainda.</p>'}</div>
   <label class="f">${S.isProf?'Mensagem para a equipe':'Mensagem para o professor'}<textarea id="msg-txt" style="min-height:90px"></textarea></label><button class="btn" data-act="msg-send">Enviar mensagem</button></div>`}
 function vEquipeLista(){if(S.auth&&!S.full)return vLogin();
-  {const mineA=S.auth&&!S.isProf?Object.values(teams()).filter(isMember):[];if(mineA.length===1&&!S.autoIn){S.autoIn=1;S.teamId=mineA[0].id;S.tab='cadastro';lkSync(mineA[0]);return vEquipe()}}
+  const stu=S.auth&&!S.isProf;if(stu&&S.db&&!S.mtReady)return`<div class="panel"><p class="muted">Carregando a sua equipe…</p></div>`;
+  {const mineA=stu?Object.values(teams()).filter(isMember):[];if(mineA.length===1){S.autoIn=1;S.teamId=mineA[0].id;if(!S.tab)S.tab='cadastro';lkSync(mineA[0]);return vEquipe()}}
   const c=cfg(),all=Object.values(teams()).map(norm),mine=all.filter(t=>(S.auth?isMember(t):isMine(t))||isLocalTeam(t.id)),n=S.newTeam||=(()=>{const o=newTeamObj();if(S.auth&&!S.isProf)o.info.membros[0]={nome:S.rosterNome||'',email:myEmail()};return o})();
   const card=t=>`<button class="card cardp" data-act="enter" data-id="${t.id}">${plantSVG(plantStage(t),58)}<span><h4>${esc(t.info.startup)}</h4><span class="small muted" style="display:block">${esc(t.info.org)}, ${t.info.membros.filter(m=>m.nome).length} integrantes, ${progress(t)}% preenchido</span></span></button>`;
-  return`<div class="empty-art" style="margin-bottom:6px">${plantSVG(1,64)}<h2>Área da equipe</h2></div><p class="muted" style="max-width:70ch">${S.auth?'A sua equipe aparece abaixo. Se ela ainda não foi cadastrada, um integrante faz o cadastro informando o nome e o e-mail de cada colega; só quem está no cadastro consegue editar o projeto.':'Entre na sua equipe com o código definido no cadastro, ou cadastre uma nova. Todos os integrantes usam o mesmo código.'}</p>
+  return`<div class="empty-art" style="margin-bottom:6px">${plantSVG(1,64)}<h2>Área da equipe</h2></div><p class="muted lead-full">${S.auth?'A sua equipe aparece abaixo. Se ela ainda não foi cadastrada, um integrante faz o cadastro informando o nome e o e-mail de cada colega; só quem está no cadastro consegue editar o projeto.':'Entre na sua equipe com o código definido no cadastro, ou cadastre uma nova. Todos os integrantes usam o mesmo código.'}</p>
   ${S.hosted&&S.ready&&!S.db?'<div class="note">Você não está conectado ao banco compartilhado. O que preencher fica salvo neste navegador; ao terminar, baixe o arquivo da equipe em "Revisar e inscrever" e envie ao professor.</div>':''}
   ${S.db&&S.readOnly?'<div class="note">Seu acesso a esta página é somente leitura. O que preencher fica salvo neste navegador; ao terminar, baixe o arquivo da equipe e envie ao professor.</div>':''}
   ${S.auth&&!S.isProf?loginHelp(false):''}
   ${mine.length?`<h3 style="margin:18px 0 8px">${S.auth?'Sua equipe':'Suas equipes neste navegador'}</h3><div class="grid g3">${mine.map(card).join('')}</div>`:''}
-  <h3 style="margin:18px 0 8px">Todas as equipes</h3>${all.length?`<div class="grid g3">${all.map(card).join('')}</div>`:'<p class="muted">Nenhuma equipe cadastrada ainda.</p>'}
-  <div class="panel" style="margin-top:24px"><h3>Cadastrar nova equipe</h3>
+  ${stu?'':`<h3 style="margin:18px 0 8px">Todas as equipes</h3>${all.length?`<div class="grid g3">${all.map(card).join('')}</div>`:'<p class="muted">Nenhuma equipe cadastrada ainda.</p>'}`}
+  ${stu&&mine.length?'':`<div class="panel" style="margin-top:24px"><h3>Cadastrar nova equipe</h3>
   ${c.inscricoesAbertas||S.isProf?`<div class="grid g2">
     <label class="f">Nome da startup (a consultoria da equipe)${inp('info.startup',n.info.startup,{scope:'new'})}</label>
     <label class="f">Organização-alvo (empresa ou ONG de Manaus e adjacências)${inp('info.org',n.info.org,{scope:'new'})}</label>
@@ -1205,7 +1271,7 @@ function vEquipeLista(){if(S.auth&&!S.full)return vLogin();
    <div class="small" style="font-weight:600">Integrantes${c.maxMembros?` (até ${c.maxMembros})`:''}</div>
    ${n.info.membros.map((m,i)=>`<div class="row" style="margin-top:6px"><div style="flex:1;min-width:150px">${inp(`info.membros.${i}.nome`,m.nome,{scope:'new',ph:'Nome completo',al:'Nome'})}</div><div style="flex:1;min-width:150px">${inp(`info.membros.${i}.email`,m.email,{scope:'new',ph:'E-mail',type:'email',al:'E-mail'})}</div><button class="x" data-act="new-delm" data-i="${i}" aria-label="Remover integrante">×</button></div>`).join('')}
    <div class="row" style="margin-top:12px"><button class="btn ghost sm" data-act="new-addm" ${c.maxMembros&&n.info.membros.length>=c.maxMembros?'disabled':''}>Adicionar integrante</button><button class="btn" data-act="new-save">Cadastrar equipe</button></div>`
-  :'<p class="muted">O professor encerrou o cadastro de novas equipes.</p>'}</div>`}
+  :'<p class="muted">O professor encerrou o cadastro de novas equipes.</p>'}</div>`}`}
 function tCadastro(t){const c=cfg();return`<div class="panel"><h3>Dados da equipe</h3><div class="grid g2">
    <label class="f">Nome da startup${inp('info.startup',t.info.startup)}</label>
    <label class="f">Organização-alvo${inp('info.org',t.info.org)}</label>
@@ -1338,7 +1404,7 @@ const profRO=()=>S.isProf&&S.asProf&&!S.profEdit&&S.view==='equipe'&&!!cur();
 function profLock(){if(!profRO()||S.tab==='msgs'||S.tab==='hist')return;$$('#app input,#app select,#app textarea').forEach(e=>{e.disabled=true});
   $$('#app [data-act]').forEach(e=>{if(EDIT_ACTS.includes(e.dataset.act))e.hidden=true});$$('#app label.f').forEach(l=>{if(l.querySelector('input[type=file]'))l.hidden=true})}
 /* ============ dashboard ============ */
-function vDash(){if(S.auth&&!S.full)return`<h2 style="margin-bottom:6px">Dashboard</h2><div class="panel"><p>O dashboard mostra os indicadores das equipes da turma. Entre com o seu e-mail para ver.</p><button class="btn" data-act="go-login">${ic('users')} Entrar</button></div>`;const c=cfg(),ts=Object.values(teams()).map(norm).sort((a,b)=>String(a.info.startup).localeCompare(String(b.info.startup))),n=ts.length,rows=chkRows(c),now=new Date();
+function vDash(){if(S.auth&&!S.full)return`<h2 style="margin-bottom:6px">Dashboard</h2><div class="panel"><p>O dashboard mostra os indicadores das equipes da turma. Entre com o seu e-mail para ver.</p><button class="btn" data-act="go-login">${ic('users')} Entrar</button></div>`;const c=cfg(),ts=Object.values(peers()).map(norm).sort((a,b)=>String(a.info.startup).localeCompare(String(b.info.startup))),n=ts.length,rows=chkRows(c),now=new Date();
   const pr=ts.map(progress),os=ts.map(orcSum),avg=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:0,sum=a=>a.reduce((x,y)=>x+y,0);
   const ins=ts.filter(t=>t.envio&&t.homol).length,agu=ts.filter(aguarda).length,fin=ts.filter(t=>t.final).length,mem=sum(ts.map(t=>t.info.membros.filter(m=>m.nome).length));
   const ck=ts.map(t=>{const o={C:0,E:0,P:0,N:0};rows.forEach(r=>{const s=t.chk[r.k]?.s;o[s==='C'||s==='E'||s==='P'?s:'N']++});return o});
@@ -1590,10 +1656,10 @@ document.addEventListener('click',async e=>{const b=e.target.closest('[data-act]
     Object.values(teams()).forEach(t=>(t.info?.membros||[]).forEach(m=>{const em=String(m.email||'').trim().toLowerCase();if(isEmail(em)&&!have.has(em)){have.add(em);add.push(((m.nome||'').trim()?m.nome.trim()+'; ':'')+em)}}));
     S.rosterDraft=(cur0?cur0+'\n':'')+add.join('\n');toast(add.length?add.length+' e-mail(s) incluídos no texto. Revise e clique em Salvar lista da turma.':'Todos os e-mails das equipes já estão na lista.');render();break}
   case'acl-sync':{if(!S.isProf)break;let n=0;b.disabled=true;for(const t of Object.values(S.shared||{})){const a=aclOf(t,false);if(sameAcl(a,t.acl))continue;try{await S.db.doc('teams/'+t.id).update({acl:a});t.acl=a;n++}catch(er){}}
-    toast(n?`Acessos atualizados em ${n} equipe(s).`:'Os acessos já estavam atualizados.');render();break}
+    const n2=await syncAll();toast(n||n2?`Acessos atualizados${n?` em ${n} equipe(s)`:''}.`:'Os acessos já estavam atualizados.');render();break}
   case'ptab':S.ptab=d.v;if(d.v==='cfg')S.draft=null;render();break;
-  case'leave':S.profEdit=false;S.asProf=false;await flush();S.teamId=null;render();break;
-  case'enter':{S.asProf=false;const x=T(d.id);if(!x)break;if(!S.auth&&!S.isProf&&!isMine(x)&&x.code){const v=await ask({title:'Entrar em '+x.info.startup,body:'Digite o código de acesso da equipe.',input:'',ok:'Entrar',type:'password'});if(v==null)break;if(hash(x.id+v)!==x.code){toast('Código incorreto.');break}addMine(x)}
+  case'leave':if(S.auth&&!S.isProf)break;S.profEdit=false;S.asProf=false;await flush();S.teamId=null;render();break;
+  case'enter':{S.asProf=false;const x=T(d.id);if(!x)break;if(S.auth&&!S.isProf&&!isMember(x))break;if(!S.auth&&!S.isProf&&!isMine(x)&&x.code){const v=await ask({title:'Entrar em '+x.info.startup,body:'Digite o código de acesso da equipe.',input:'',ok:'Entrar',type:'password'});if(v==null)break;if(hash(x.id+v)!==x.code){toast('Código incorreto.');break}addMine(x)}
     S.teamId=x.id;S.tab='cadastro';monitorSoon(x.id,1500);lkSync(x);render();if(!S.isProf&&!verifiedMk(x))await askWho(x);break}
   case'open':S.profEdit=false;S.asProf=true;S.hBy='';S.hK='';S.teamId=d.id;S.view='equipe';S.tab=d.tab||'projeto';render();window.scrollTo(0,0);break;
   case'go-eval':S.evalId=d.id;S.ptab='aval';render();break;
@@ -1605,7 +1671,8 @@ document.addEventListener('click',async e=>{const b=e.target.closest('[data-act]
       if(!n.info.membros.length||n.info.membros.some(m=>!(m.nome||'').trim()||!isEmail(m.email))){toast('Informe o nome e um e-mail válido de cada integrante.');if(!n.info.membros.length)n.info.membros=[{nome:'',email:''}];render();break}
       n.info.membros.forEach(m=>{m.nome=m.nome.trim();m.email=String(m.email).trim().toLowerCase()});
       if(!S.isProf&&!n.info.membros.some(m=>m.email===myEmail())){toast('Inclua o seu próprio e-mail ('+myEmail()+') entre os integrantes.');break}
-      if(Object.values(teams()).some(x=>x.info?.startup?.toLowerCase()===n.info.startup.toLowerCase())){toast('Já existe uma equipe com esse nome de startup.');break}
+      if(!S.isProf&&Object.values(teams()).some(isMember)){toast('Você já faz parte de uma equipe.');break}
+      if(Object.values(peers()).some(x=>x.info?.startup?.toLowerCase()===n.info.startup.toLowerCase())){toast('Já existe uma equipe com esse nome de startup.');break}
       n.code='';n.acl=aclOf(n,true);n.p3={nome:n.info.org};b.disabled=true;const where=await createTeam(n);S.newTeam=null;S.teamId=n.id;S.tab='checklist';S.autoIn=1;lkSync(n);
       toast(where==='shared'?'Equipe cadastrada.':'Não foi possível gravar no banco. Confira a conexão.');render();window.scrollTo(0,0);break}n.info.startup=n.info.startup.trim();n.info.org=n.info.org.trim();n.info.membros=n.info.membros.filter(m=>m.nome.trim());
     if(!n.info.startup||!n.info.org){toast('Informe o nome da startup e a organização-alvo.');render();break}
